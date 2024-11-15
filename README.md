@@ -21,7 +21,7 @@ Bộ dữ liệu bao gồm các thông số thời tiết, chẳng hạn như nh
 
 ## Chức năng của Dữ liệu
 
-Bộ dữ liệu được thiết kế để:
+Bộ dữ liệu được thiết kế để:   
 
 1. **Thực hành các thuật toán phân loại**: Phân loại thời tiết dựa trên các đặc điểm đầu vào, rất hữu ích cho các bài toán học máy trong lĩnh vực phân loại (classification).
 2. **Xử lý dữ liệu và tiền xử lý**: Dữ liệu bao gồm nhiều kiểu biến khác nhau (liên tục, phân loại), tạo điều kiện cho việc áp dụng các kỹ thuật tiền xử lý, chuyển đổi, và xử lý dữ liệu.
