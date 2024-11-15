@@ -60,11 +60,11 @@ def deleteData(data):
             print("No data available to delete.")
             return data
 
-        # Người dùng nhập chỉ số dòng bắt đầu từ 2 (tức là dòng thứ 2 trong data)
-        row_to_delete = int(input("Enter the row number to delete (starting from 1): "))
+        # Người dùng nhập chỉ số dòng bắt đầu từ 1 (tức là dòng đầu tiên trong data)
+        row_to_delete = int(input("Enter the row number to delete (starting from 1): ")) - 1
 
-        # Kiểm tra phạm vi hợp lệ từ dòng thứ 2 trở đi
-        if 1 <= row_to_delete < len(data):  # Bắt đầu từ dòng thứ 2 (chỉ số 1)
+        # Kiểm tra phạm vi hợp lệ
+        if 0 <= row_to_delete < len(data):
             # Xóa dòng và reset lại chỉ mục
             data = data.drop(index=row_to_delete).reset_index(drop=True)
             print("Row deleted successfully!")
