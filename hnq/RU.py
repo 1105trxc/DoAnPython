@@ -19,7 +19,9 @@ def read_data(data):
         print("No data available.")
     else:
         print("\nWeather Data:")
-        print(data)
+        data_with_index = data.copy()
+        data_with_index.index = range(2, len(data) + 2)
+        print(data_with_index)
 
 
 # Hàm cập nhật dữ liệu
@@ -30,7 +32,7 @@ def update_data(data):
             return data
 
         # Lấy chỉ số hàng cần cập nhật
-        index = int(input("Enter the index of the row to update: "))
+        index = int(input("Enter the index of the row to update: ")) + 1
         if index < 0 or index >= len(data):
             print("Invalid index.")
             return data
