@@ -2,7 +2,9 @@ import pandas as pd
 import numpy as np
 
 # Đọc dữ liệu
-data = pd.read_csv(r"D:\hocTap\CODE\doAnPytthon\weather_classification_data.csv")
+#data = pd.read_csv(r"D:\hocTap\CODE\doAnPytthon\weather_classification_data.csv")
+data = pd.read_csv(r"D:\hocTap\CODE\doAnPytthon\weather_classification_data.csv", encoding='utf-8')
+
 
 # 1. Kiểm tra giá trị null
 print("Số lượng giá trị null trong mỗi cột:")
@@ -46,14 +48,16 @@ data.drop(columns=columns_to_drop, errors='ignore', inplace=True)
 
 # 7. Thay đổi tên cột (Thêm đơn vị):
 data.rename(columns={
-    'Temperature': 'Temperature (°C)', 
+    'Temperature': 'Temperature (\u00b0C)', 
     'Humidity': 'Humidity (%)', 
     'Wind Speed': 'Wind Speed (mph)', 
     'Atmospheric Pressure': 'Atmospheric Pressure (hPa)'
 }, inplace=True)
 
 # 8. Lưu dữ liệu đã làm sạch
-data.to_csv(r"D:\hocTap\CODE\doAnPytthon\Cleaning\dataDaLamSach.csv", index=False)
+#data.to_csv(r"D:\hocTap\CODE\doAnPytthon\Cleaning\dataDaLamSach.csv", index=False)
+data.to_csv(r"D:\hocTap\CODE\doAnPytthon\Cleaning\dataDaLamSach.csv", index=False, encoding='utf-8-sig')
+
 
 print("Dữ liệu đã làm sạch:")
 print(data.head())
