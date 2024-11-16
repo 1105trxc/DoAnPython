@@ -43,7 +43,7 @@ def update_data(data):
             new_value = input(f"{col} (current: {data.at[index, col]}): ") #hiển thị giá trị tại hàng và cột 
             if col == "Cloud Cover":
                     # Các giá trị hợp lệ cho Cloud Cover
-                    valid_cloudy = ["partly cloudy", "clear", "overcast"]
+                    valid_cloudy = ["Partly cloudy", "Clear", "Overcast"]
                     while new_value not in valid_cloudy:
                         print(f"Invalid value for {col}. Must be one of {valid_cloudy}. Please enter again.")
                         new_value = input(f"{col} (current: {data.at[index, col]}): ")
@@ -55,7 +55,7 @@ def update_data(data):
                         new_value = input(f"{col} (current: {data.at[index, col]}): ")
             elif col == "Location":
                     # Các giá trị hợp lệ cho Locatiom
-                    valid_location = ["inland", "mountain", "coastal"]
+                    valid_location = ["Inland", "Mountain", "Coastal"]
                     while new_value not in valid_location:
                         print(f"Invalid value for {col}. Must be one of {valid_location}. Please enter again.")
                         new_value = input(f"{col} (current: {data.at[index, col]}): ")
@@ -75,6 +75,10 @@ def update_data(data):
                                 new_value = float(new_value)
                             else:
                                 new_value = int(new_value)
+                            if col == 'Temperature (°C)': pass
+                            else:
+                                while new_value < 0:
+                                    new_value = float(input(f"Invalid value for {col}. Must be more than 0. Pleae enter again:"))
                             break  # Thoát khỏi vòng lặp nếu chuyển đổi thành công
                         except ValueError:
                             print(f"The value entered for {col} is invalid. Please enter a valid number.")
