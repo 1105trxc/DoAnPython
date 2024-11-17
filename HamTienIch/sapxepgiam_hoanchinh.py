@@ -15,7 +15,7 @@ def sap_xep(file_name, column_name, ascending=False, output=output_file):
     
     # Ghi kết quả ra file CSV mới
     df_sorted.to_csv(output_file, index=False)
-    print(f"Đã sắp xếp dữ liệu tăng theo cột '{column_name}' và lưu vào file '{output_file}'.")
+    print(f"Đã sắp xếp dữ liệu giảm theo cột '{column_name}' và lưu vào file '{output_file}'.")
 
 def sapxep():
     print("1. Temperature (°C)")
