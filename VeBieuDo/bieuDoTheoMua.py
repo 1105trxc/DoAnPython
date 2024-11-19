@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 # Đọc dữ liệu
-data = pd.read_csv(r"D:\hocTap\CODE\doAnPytthon\Cleaning\dataDaLamSach.csv")
+data = pd.read_csv('dataDaLamSach.csv')
 
 # Hàm để thêm nhãn giá trị trên cột
 def add_value_labels(ax):
@@ -27,7 +27,7 @@ plt.figure(figsize=(10, 6))
 ax = sns.barplot(data=data, x='Season', y='Temperature (°C)', errorbar=None, hue='Season', legend=False)
 plt.title('Nhiệt độ trung bình  theo mùa', fontsize=16)
 plt.xlabel('Mùa', fontsize=12)
-plt.ylabel('Nhiệt độ trung bình  (°C)', fontsize=12)
+plt.ylabel('Nhiệt độ trung bình (°C)', fontsize=12)
 plt.grid(axis='y')
 add_value_labels(ax)
 plt.show()

@@ -2,7 +2,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
-data = pd.read_csv(r"D:\hocTap\CODE\doAnPytthon\Cleaning\dataDaLamSach.csv")
+data = pd.read_csv('dataDaLamSach.csv')
 # Lọc các cột số trong dữ liệu
 numerical_columns = data.select_dtypes(include=['float64', 'int64'])
 
