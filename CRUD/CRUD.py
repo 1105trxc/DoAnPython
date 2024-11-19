@@ -1,16 +1,79 @@
 import pandas as pd
 
-file_path = 'dataDaLamSach.csv'
+file_path = 'D:\\PY_prj\DoAnPython\weather_classification_data.csv'
 
 # Tải dữ liệu từ file CSV nếu có, nếu không sẽ tạo DataFrame trống với các cột phù hợp
 try:
     data = pd.read_csv(file_path)
 except FileNotFoundError:
     data = pd.DataFrame(columns=[
-        'Temperature (°C)', 'Humidity (%)', 'Wind Speed (mph)', 'Precipitation (%)',
+        'Temperature (°F)', 'Humidity (%)', 'Wind Speed (mph)', 'Precipitation (%)',
         'Cloud Cover', 'Atmospheric Pressure (hPa)', 'UV Index', 'Season',
         'Visibility (km)', 'Location', 'Weather Type'
     ])
+
+# Hàm thêm dữ liệu mới
+def addData(data):
+    try:
+        temperature = float(input("Nhập vào Temperature (°F): "))
+        humidity = float(input("Nhập vào Humidity (%): "))
+        wind_speed = float(input("Nhập vào Wind Speed (mph): "))
+        precipitation = float(input("Nhập vào Precipitation (%): "))
+        cloud_cover = input("Nhập vào Cloud Cover (e.g., partly cloudy, clear, overcast): ")
+        pressure = float(input("Nhập vào Atmospheric Pressure (hPa): "))
+        uv_index = int(input("Nhập vào UV Index: "))
+        season = input("Nhập vào Season (Winter, Spring, Summer, Autumn): ")
+        visibility = float(input("Nhập vào Visibility (km): "))
+        location = input("Nhập vào Location (inland, mountain, coastal): ")
+        weather_type = input("Nhập vào Weather Type (Rainy, Sunny, Cloudy, Snowy): ")
+
+        # Tạo hàng mới dưới dạng DataFrame để đảm bảo cấu trúc khớp với DataFrame gốc
+        new_row = pd.DataFrame([{
+            'Temperature': temperature,
+            'Humidity': humidity,
+            'Wind Speed': wind_speed,
+            'Precipitation (%)': precipitation,
+            'Cloud Cover': cloud_cover,
+            'Atmospheric Pressure': pressure,
+            'UV Index': uv_index,
+            'Season': season,
+            'Visibility (km)': visibility,
+            'Location': location,
+            'Weather Type': weather_type
+        }])
+
+        # Thêm hàng mới vào đầu DataFrame
+        data = pd.concat([new_row, data], ignore_index=True)
+        print("Thêm dữ liệu thành công!")
+        return data
+
+    except ValueError:
+        print("Dữ liệu nhập vào không hợp lệ, vui lòng nhập lại.")
+        return data
+
+# Hàm xóa dữ liệu
+def deleteData(data):
+    try:
+        if data.empty:
+            print("Không tồn tại dữ liệu để xóa.")
+            return data
+
+        # Người dùng nhập chỉ số dòng bắt đầu từ 1 (tức là dòng đầu tiên trong data)
+        row_to_delete = int(input("Nhập vào số dòng muốn xóa (bắt đầu là 1): ")) - 1
+
+        # Kiểm tra phạm vi hợp lệ
+        if 0 <= row_to_delete < len(data):
+            # Xóa dòng và reset lại chỉ mục
+            data = data.drop(index=row_to_delete).reset_index(drop=True)
+            print("Xóa thành công!")
+        else:
+            print("Giá trị cột nhập vào không hợp lệ. Hãy nhập lại.")
+
+        return data
+
+    except ValueError:
+        print("Giá trị nhập vào không hợp lệ.")
+        return data
 
 
 # Hàm đọc dữ liệu
@@ -62,7 +125,7 @@ def update_data(data):
             return data
 
         # Lấy chỉ số hàng cần cập nhật
-        index = int(input("Nhập hàng bạn muốn cập nhật dữ liệu: ")) + 1
+        index = int(input("Nhập hàng bạn muốn cập nhật dữ liệu: ")) - 1
         if index < 0 or index >= len(data):
             print("Giá trị không hợp lệ.")
             return data
@@ -129,8 +192,6 @@ def save_data(data):
 #  Đọc dữ liệu
 read_data(data)
 
-# Gọi hàm cập nhật dữ liệu
-#update_data(data)
-
+update_data(data)
 # Lưu dữ liệu sau khi cập nhật
 save_data(data)
