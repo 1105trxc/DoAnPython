@@ -23,7 +23,7 @@ def add_value_labels(ax):
 # Vẽ Bar Plot cho nhiệt độ theo mùa
 plt.figure(figsize=(10, 6))
 ax = sns.barplot(data=data, x='Season', y='Temperature (°C)', errorbar=None, hue='Season', legend=False)
-plt.title('Nhiệt độ trung bình theo mùa', fontsize=16)
+plt.title('Nhiệt độ trung bình  theo mùa', fontsize=16)
 plt.xlabel('Mùa', fontsize=12)
 plt.ylabel('Nhiệt độ trung bình (°C)', fontsize=12)
 plt.grid(axis='y')
@@ -67,5 +67,3 @@ plt.grid(True)
 add_value_labels(ax)
 plt.tight_layout()  # Điều chỉnh không gian giữa các nhãn
 plt.show()
-
-
