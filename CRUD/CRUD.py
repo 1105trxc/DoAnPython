@@ -1,6 +1,6 @@
 import pandas as pd
 
-file_path = 'D:\\PY_prj\DoAnPython\weather_classification_data.csv'
+file_path = 'dataDaLamSach.csv'
 
 # Tải dữ liệu từ file CSV nếu có, nếu không sẽ tạo DataFrame trống với các cột phù hợp
 try:
@@ -48,7 +48,7 @@ def addData(data):
         return data
 
     except ValueError:
-        print("Dữ liệu nhập vào không hợp lệ, vui lòng nhập lại.")
+        print("Dữ liệu nhập vào không hợp lệ, vui lòng nhập lại")
         return data
 
 # Hàm xóa dữ liệu
