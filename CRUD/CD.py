@@ -2,22 +2,22 @@ import pandas as pd
 import os
 
 # Đường dẫn đến file CSV
-file_path = 'E:\\DoAnPython\\weather_classification_data.csv'
+file_path = 'dataDaLamSach.csv'
 
 # Tải dữ liệu từ file CSV nếu có, nếu không sẽ tạo DataFrame trống với các cột phù hợp
 if os.path.exists(file_path):
     data = pd.read_csv(file_path, header=0)  # Đọc dữ liệu và lấy hàng đầu tiên làm tiêu đề
 else:
     data = pd.DataFrame(columns=[  # Tạo DataFrame trống với tiêu đề tương ứng
-        'Temperature', 'Humidity', 'Wind Speed', 'Precipitation (%)',
-        'Cloud Cover', 'Atmospheric Pressure', 'UV Index', 'Season',
+        'Temperature (°C)', 'Humidity (%)', 'Wind Speed (mph)', 'Precipitation (%)',
+        'Cloud Cover', 'Atmospheric Pressure (hPa)', 'UV Index', 'Season',
         'Visibility (km)', 'Location', 'Weather Type'
     ])
 
 # Hàm thêm dữ liệu mới
 def addData(data):
     try:
-        temperature = float(input("Enter Temperature (°F): "))
+        temperature = float(input("Enter Temperature (°C): "))
         humidity = float(input("Enter Humidity (%): "))
         wind_speed = float(input("Enter Wind Speed (mph): "))
         precipitation = float(input("Enter Precipitation (%): "))
@@ -31,9 +31,9 @@ def addData(data):
 
         # Tạo hàng mới dưới dạng DataFrame để đảm bảo cấu trúc khớp với DataFrame gốc
         new_row = pd.DataFrame([{
-            'Temperature': temperature,
-            'Humidity': humidity,
-            'Wind Speed': wind_speed,
+            'Temperature (°C)': temperature,
+            'Humidity (%)': humidity,
+            'Wind Speed (mph)': wind_speed,
             'Precipitation (%)': precipitation,
             'Cloud Cover': cloud_cover,
             'Atmospheric Pressure': pressure,

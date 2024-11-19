@@ -1,7 +1,7 @@
 import pandas as pd
 
-file_path = 'D:\\hocTap\\CODE\\doAnPytthon\\weather_classification_data.csv' 
-output_file = 'D:\\hocTap\\CODE\\doAnPytthon\\output.csv'
+file_path = 'dataDaLamSach.csv' 
+output_file = 'outPut.csv'
 
 try:
     data = pd.read_csv(file_path)
@@ -18,8 +18,8 @@ except ValueError:
     exit()
 
 # Lọc dữ liệu theo khoảng giá trị
-filtered_data = data[(data['Humidity'] >= min_pressure) & 
-                     (data['Humidity'] <= max_pressure)]
+filtered_data = data[(data['Humidity (%)'] >= min_pressure) & 
+                     (data['Humidity (%)'] <= max_pressure)]
 
 # Kiểm tra nếu không có dữ liệu nào thỏa mãn
 if filtered_data.empty:

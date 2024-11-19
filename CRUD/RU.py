@@ -1,13 +1,13 @@
 import pandas as pd
 
-file_path = 'D:\\PY_prj\DoAnPython\weather_classification_data.csv'
+file_path = 'dataDaLamSach.csv'
 
 # Tải dữ liệu từ file CSV nếu có, nếu không sẽ tạo DataFrame trống với các cột phù hợp
 try:
     data = pd.read_csv(file_path)
 except FileNotFoundError:
     data = pd.DataFrame(columns=[
-        'Temperature (°F)', 'Humidity (%)', 'Wind Speed (mph)', 'Precipitation (%)',
+        'Temperature (°C)', 'Humidity (%)', 'Wind Speed (mph)', 'Precipitation (%)',
         'Cloud Cover', 'Atmospheric Pressure (hPa)', 'UV Index', 'Season',
         'Visibility (km)', 'Location', 'Weather Type'
     ])

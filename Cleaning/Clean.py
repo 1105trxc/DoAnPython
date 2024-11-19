@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 
 # Đọc dữ liệu
-data = pd.read_csv(r"D:\hocTap\CODE\doAnPytthon\weather_classification_data.csv", encoding='utf-8')
+#data = pd.read_csv(r"D:\hocTap\CODE\doAnPytthon\weather_classification_data.csv", encoding='utf-8')
+data = pd.read_csv('weather_classification_data.csv', encoding='utf-8')
 
 
 # 1. Kiểm tra giá trị null
@@ -54,8 +55,8 @@ data.rename(columns={
 }, inplace=True)
 
 # 8. Lưu dữ liệu đã làm sạch
-data.to_csv(r"D:\hocTap\CODE\doAnPytthon\Cleaning\dataDaLamSach.csv", index=False, encoding='utf-8-sig')
-
+#data.to_csv(r"D:\hocTap\CODE\doAnPytthon\Cleaning\dataDaLamSach.csv", index=False, encoding='utf-8-sig')
+data.to_csv('dataDaLamSach.csv', index=False, encoding='utf-8-sig')
 
 print("Dữ liệu đã làm sạch:")
 print(data.head())
