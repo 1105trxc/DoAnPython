@@ -1,6 +1,6 @@
 import pandas as pd
-file_name=r"C:\DAPython\dataDaLamSach.csv"
-output_file=r"C:\DAPython\filtered_output.csv"
+file_name=r"dataDaLamSach.csv"
+output_file=r"outPut.csv"
 #Lọc string
 def loc_du_lieu_csv(file_name, condition, output_file):
     # Đọc dữ liệu từ file CSV

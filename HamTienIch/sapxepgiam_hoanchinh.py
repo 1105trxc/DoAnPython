@@ -1,6 +1,6 @@
 import pandas as pd
-file_name=r"C:\DAPython\dataDaLamSach.csv"
-output_file=r"C:\DAPython\sorted_output.csv"
+file_name= "dataDaLamSach.csv"
+output_file= "outPut.csv"
 def sap_xep(file_name, column_name, ascending=False, output=output_file):
     # Đọc dữ liệu từ file CSV
     df = pd.read_csv(file_name)
