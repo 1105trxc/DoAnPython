@@ -19,12 +19,12 @@ def Create(data):
         humidity = float(input("Nhập vào Humidity (%): "))
         wind_speed = float(input("Nhập vào Wind Speed (mph): "))
         precipitation = float(input("Nhập vào Precipitation (%): "))
-        cloud_cover = input("Nhập vào Cloud Cover (e.g., partly cloudy, clear, overcast): ")
+        cloud_cover = input("Nhập vào Cloud Cover (e.g., Partly cloudy, Clear, Overcast): ")
         pressure = float(input("Nhập vào Atmospheric Pressure (hPa): "))
         uv_index = int(input("Nhập vào UV Index: "))
         season = input("Nhập vào Season (Winter, Spring, Summer, Autumn): ")
         visibility = float(input("Nhập vào Visibility (km): "))
-        location = input("Nhập vào Location (inland, mountain, coastal): ")
+        location = input("Nhập vào Location (Inland, Mountain, Coastal): ")
         weather_type = input("Nhập vào Weather Type (Rainy, Sunny, Cloudy, Snowy): ")
 
         # Tạo hàng mới dưới dạng DataFrame để đảm bảo cấu trúc khớp với DataFrame gốc
