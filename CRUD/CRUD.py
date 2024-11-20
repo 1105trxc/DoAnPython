@@ -13,7 +13,7 @@ except FileNotFoundError:
     ])
 
 # Hàm thêm dữ liệu mới
-def addData(data):
+def Create(data):
     try:
         temperature = float(input("Nhập vào Temperature (°C): "))
         humidity = float(input("Nhập vào Humidity (%): "))
@@ -52,7 +52,7 @@ def addData(data):
         return data
 
 # Hàm xóa dữ liệu
-def deleteData(data):
+def Delete(data):
     try:
         if data.empty:
             print("Không tồn tại dữ liệu để xóa.")
@@ -77,7 +77,7 @@ def deleteData(data):
 
 
 # Hàm đọc dữ liệu
-def read_data(data, rows_per_page=10):
+def Read(data, rows_per_page=10):
     # Kiểm tra dữ liệu đầu vào
     if data.empty:
         print("Không tồn tại dữ liệu.")
@@ -118,7 +118,7 @@ def read_data(data, rows_per_page=10):
 
 
 # Hàm cập nhật dữ liệu
-def update_data(data):
+def Update(data):
     try:
         if data.empty:
             print("Không tồn tại dữ liệu.")
@@ -185,7 +185,7 @@ def update_data(data):
         return data
 
 # Lưu dữ liệu vào file CSV
-def save_data(data):
+def saveData(data):
     data.to_csv(file_path, index=False)
     print(f"Dữ liệu đã được lưu vào {file_path}")
 

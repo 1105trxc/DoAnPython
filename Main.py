@@ -28,15 +28,15 @@ def main():
 
         # Thực hiện chức năng tương ứng
         if choice == '1':
-            CRUD.data = CRUD.addData(CRUD.data)
+            CRUD.data = CRUD.Create(CRUD.data)
         elif choice == '2':
-            CRUD.data = CRUD.deleteData(CRUD.data)
+            CRUD.data = CRUD.Delete(CRUD.data)
         elif choice == '3':
-            CRUD.read_data(CRUD.data)
+            CRUD.Read(CRUD.data)
         elif choice == '4':
-            CRUD.data = CRUD.update_data(CRUD.data)
+            CRUD.data = CRUD.Update(CRUD.data)
         elif choice == '5':
-            CRUD.save_data(CRUD.data)
+            CRUD.saveData(CRUD.data)
         elif choice == '6':
              locDuLieu.file_name = locDuLieu.xuatLocDuLieu()
         elif choice == '7':
@@ -44,11 +44,11 @@ def main():
         elif choice == '8':
             sapXepTang.file_name = sapXepTang.sapXepTang()
         elif choice == '9':
-            bieuDoKhuVuc.data = bieuDoKhuVuc.draw()
+            bieuDoKhuVuc.data = bieuDoKhuVuc.Draw()
         elif choice == '10':
-            bieuDoMua.data = bieuDoMua.draw()
+            bieuDoMua.data = bieuDoMua.Draw()
         elif choice == '11':
-            heatMap.data = heatMap.draw()
+            heatMap.data = heatMap.Draw()
         elif choice == '12':
             print("Thoát chương trình.")
             break

@@ -22,7 +22,7 @@ def addValueLabels(ax):
                         fontsize=10, 
                         color='black')
 
-def draw():
+def Draw():
     # Vẽ Bar Plot cho nhiệt độ theo mùa
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Season', y='Temperature (°C)', errorbar=None, hue='Season', legend=False)
