@@ -15,7 +15,7 @@ except FileNotFoundError:
 # Hàm thêm dữ liệu mới
 def addData(data):
     try:
-        temperature = float(input("Nhập vào Temperature (°C): "))
+        temperature = float(input("Nhập vào Temperature (°F): "))
         humidity = float(input("Nhập vào Humidity (%): "))
         wind_speed = float(input("Nhập vào Wind Speed (mph): "))
         precipitation = float(input("Nhập vào Precipitation (%): "))
@@ -48,7 +48,7 @@ def addData(data):
         return data
 
     except ValueError:
-        print("Dữ liệu nhập vào không hợp lệ, vui lòng nhập lại")
+        print("Dữ liệu nhập vào không hợp lệ, vui lòng nhập lại.")
         return data
 
 # Hàm xóa dữ liệu
@@ -189,9 +189,3 @@ def save_data(data):
     data.to_csv(file_path, index=False)
     print(f"Dữ liệu đã được lưu vào {file_path}")
 
-#  Đọc dữ liệu
-read_data(data)
-
-update_data(data)
-# Lưu dữ liệu sau khi cập nhật
-save_data(data)
