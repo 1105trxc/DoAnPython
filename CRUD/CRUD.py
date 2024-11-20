@@ -7,7 +7,7 @@ try:
     data = pd.read_csv(file_path)
 except FileNotFoundError:
     data = pd.DataFrame(columns=[
-        'Temperature (°F)', 'Humidity (%)', 'Wind Speed (mph)', 'Precipitation (%)',
+        'Temperature (°C)', 'Humidity (%)', 'Wind Speed (mph)', 'Precipitation (%)',
         'Cloud Cover', 'Atmospheric Pressure (hPa)', 'UV Index', 'Season',
         'Visibility (km)', 'Location', 'Weather Type'
     ])
@@ -15,7 +15,7 @@ except FileNotFoundError:
 # Hàm thêm dữ liệu mới
 def addData(data):
     try:
-        temperature = float(input("Nhập vào Temperature (°F): "))
+        temperature = float(input("Nhập vào Temperature (°C): "))
         humidity = float(input("Nhập vào Humidity (%): "))
         wind_speed = float(input("Nhập vào Wind Speed (mph): "))
         precipitation = float(input("Nhập vào Precipitation (%): "))
