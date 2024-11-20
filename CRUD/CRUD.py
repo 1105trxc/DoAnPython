@@ -15,7 +15,7 @@ except FileNotFoundError:
 # Hàm thêm dữ liệu mới
 def addData(data):
     try:
-        temperature = float(input("Nhập vào Temperature (°F): "))
+        temperature = float(input("Nhập vào Temperature (°C): "))
         humidity = float(input("Nhập vào Humidity (%): "))
         wind_speed = float(input("Nhập vào Wind Speed (mph): "))
         precipitation = float(input("Nhập vào Precipitation (%): "))
