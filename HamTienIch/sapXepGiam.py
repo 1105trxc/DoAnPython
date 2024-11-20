@@ -4,11 +4,6 @@ output_file= "outPut.csv"
 def sapXep(file_name, column_name, ascending=False, output=output_file):
     # Đọc dữ liệu từ file CSV
     df = pd.read_csv(file_name)
-    
-    '''# Kiểm tra xem cột có tồn tại không
-    if column_name not in df.columns:
-        print(f"Lỗi: Cột '{column_name}' không tồn tại. Các cột hiện có: {list(df.columns)}")
-        return'''
 
     # Sắp xếp dữ liệu theo cột
     df_sorted = df.sort_values(by=column_name, ascending=ascending)
