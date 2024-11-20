@@ -1,7 +1,7 @@
 import pandas as pd
 file_name= "dataDaLamSach.csv"
 output_file= "outPut.csv"
-def sap_xep(file_name, column_name, ascending=True, output=output_file):
+def sapXep(file_name, column_name, ascending=True, output=output_file):
     # Đọc dữ liệu từ file CSV
     df = pd.read_csv(file_name)
 
@@ -12,7 +12,7 @@ def sap_xep(file_name, column_name, ascending=True, output=output_file):
     df_sorted.to_csv(output_file, index=False)
     print(f"Đã sắp xếp dữ liệu tăng theo cột '{column_name}' và lưu vào file '{output_file}'.")
 
-def sapxepTang():
+def sapXepTang():
     print("1. Temperature (°C)")
     print("2. Humidity (%)")
     print("3. Wind Speed (mph)")
@@ -21,19 +21,19 @@ def sapxepTang():
     print("6. UV Index")
     print("7. Visibility (km)")
     n=int(input("Nhập loại muốn sắp xếp tăng dần: "))
-    while(n<1 or n>7):
+    while n<1 or n>7:
         n=int(input("Không hợp lệ. Hãy nhập lại: "))
     if n==1:
-        sap_xep(file_name,'Temperature (°C)', ascending=True, output=output_file)
+        sapXep(file_name,'Temperature (°C)', ascending=True, output=output_file)
     elif n==2:
-        sap_xep(file_name,'Humidity (%)', ascending=True, output=output_file)
+        sapXep(file_name,'Humidity (%)', ascending=True, output=output_file)
     elif n==3: 
-        sap_xep(file_name,'Wind Speed (mph)', ascending=True, output=output_file)
+        sapXep(file_name,'Wind Speed (mph)', ascending=True, output=output_file)
     elif n==4: 
-        sap_xep(file_name,'Precipitation (%)', ascending=True, output=output_file)
+        sapXep(file_name,'Precipitation (%)', ascending=True, output=output_file)
     elif n==5: 
-        sap_xep(file_name,'Atmospheric Pressure (hPa)', ascending=True, output=output_file)
+        sapXep(file_name,'Atmospheric Pressure (hPa)', ascending=True, output=output_file)
     elif n==6: 
-        sap_xep(file_name,'UV Index', ascending=True, output=output_file)
+        sapXep(file_name,'UV Index', ascending=True, output=output_file)
     elif n==7:
-        sap_xep(file_name,'Visibility (km)', ascending=True, output=output_file)
+        sapXep(file_name,'Visibility (km)', ascending=True, output=output_file)

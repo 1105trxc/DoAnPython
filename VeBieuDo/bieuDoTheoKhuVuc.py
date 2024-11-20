@@ -6,13 +6,13 @@ import pandas as pd
 data = pd.read_csv('dataDaLamSach.csv')
 
 # Hàm để thêm nhãn giá trị trên cột
-def add_value_labels(ax):
+def addValueLabels(ax):
     for p in ax.patches:
         ax.annotate(format(p.get_height(), '.1f'), 
                     (p.get_x() + p.get_width() / 2., p.get_height()), 
                     ha='center', va='center', 
                     xytext=(0, 8), textcoords='offset points')
-def add_value_labels(ax):
+def addValueLabels(ax):
     for line in ax.lines:  # Xử lý từng đường trong biểu đồ
         for x, y in zip(line.get_xdata(), line.get_ydata()):
             ax.annotate(f'{y:.2f}',  # In giá trị với 2 chữ số thập phân
@@ -31,7 +31,7 @@ def draw():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Nhiệt độ trung bình (°C)', fontsize=12)
     plt.grid(axis='y')
-    add_value_labels(ax)
+    addValueLabels(ax)
     plt.show()
 
     # Vẽ Bar Plot cho tốc độ gió theo khu vực
@@ -41,7 +41,7 @@ def draw():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Tốc độ Gió trung bình (mph)', fontsize=12)
     plt.grid(axis='y')
-    add_value_labels(ax)
+    addValueLabels(ax)
     plt.show()
 
     # Vẽ Bar Plot cho lượng mưa theo khu vực
@@ -51,7 +51,7 @@ def draw():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Khả năng có mưa (%)', fontsize=12)
     plt.grid(axis='y')
-    add_value_labels(ax)
+    addValueLabels(ax)
     plt.show()
 
     # Vẽ Bar Plot cho độ ẩm theo khu vực
@@ -61,7 +61,7 @@ def draw():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Độ ẩm trung bình (%)', fontsize=12)
     plt.grid(axis='y')
-    add_value_labels(ax)
+    addValueLabels(ax)
     plt.show()
 
     uv_location = data.groupby('Location')['UV Index'].mean().reset_index()
@@ -72,6 +72,6 @@ def draw():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Chỉ số UV trung bình  ', fontsize=12)
     plt.grid(True)
-    add_value_labels(ax)
+    addValueLabels(ax)
     plt.tight_layout()  # Điều chỉnh không gian giữa các nhãn
     plt.show()

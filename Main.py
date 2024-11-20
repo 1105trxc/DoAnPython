@@ -38,11 +38,11 @@ def main():
         elif choice == '5':
             CRUD.save_data(CRUD.data)
         elif choice == '6':
-             locDuLieu.file_name = locDuLieu.xuatlocdulieu()
+             locDuLieu.file_name = locDuLieu.xuatLocDuLieu()
         elif choice == '7':
-             sapXepGiam.file_name = sapXepGiam.sapxepGiam()
+             sapXepGiam.file_name = sapXepGiam.sapXepGiam()
         elif choice == '8':
-            sapXepTang.file_name = sapXepTang.sapxepTang()
+            sapXepTang.file_name = sapXepTang.sapXepTang()
         elif choice == '9':
             bieuDoKhuVuc.data = bieuDoKhuVuc.draw()
         elif choice == '10':
