@@ -3,7 +3,7 @@ import seaborn as sns
 import pandas as pd
 
 # Đọc dữ liệu
-data = pd.read_csv('dataDaLamSach.csv')
+data = pd.read_csv(r"d:\hocTap\CODE\3\DoAnPython\Cleaning\dataDaLamSach.csv")
 
 # Hàm để thêm nhãn giá trị trên cột
 def addValueLabels(ax):
