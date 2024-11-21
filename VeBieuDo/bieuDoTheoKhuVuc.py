@@ -23,55 +23,86 @@ def addValueLabels(ax):
                         fontsize=10, 
                         color='black')
 
-def Draw():
-    # Vẽ Bar Plot cho nhiệt độ theo khu vực
+# Hàm vẽ các biểu đồ
+def drawNhietDo():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Location', y='Temperature (°C)', errorbar=None, hue='Location', legend=False)
-    plt.title('Nhiệt độ trung bình giữa các khu vực', fontsize=16)
+    plt.title('Nhiệt độ trung bình theo khu vực', fontsize=16)
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Nhiệt độ trung bình (°C)', fontsize=12)
     plt.grid(axis='y')
     addValueLabels(ax)
     plt.show()
 
-    # Vẽ Bar Plot cho tốc độ gió theo khu vực
+def drawSucGio():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Location', y='Wind Speed (mph)', errorbar=None, hue='Location', legend=False)
-    plt.title('Tốc độ Gió trung bình giữa các khu vực', fontsize=16)
+    plt.title('Tốc độ Gió trung bình theo khu vực', fontsize=16)
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Tốc độ Gió trung bình (mph)', fontsize=12)
     plt.grid(axis='y')
     addValueLabels(ax)
     plt.show()
 
-    # Vẽ Bar Plot cho lượng mưa theo khu vực
+def drawKhaNangMua():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Location', y='Precipitation (%)', errorbar=None, hue='Location', legend=False)
-    plt.title('Khả năng có mưa giữa các khu vực', fontsize=16)
+    plt.title('Khả năng có mưa theo khu vực', fontsize=16)
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Khả năng có mưa (%)', fontsize=12)
     plt.grid(axis='y')
     addValueLabels(ax)
     plt.show()
 
-    # Vẽ Bar Plot cho độ ẩm theo khu vực
+def drawDoAm():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Location', y='Humidity (%)', errorbar=None, hue='Location', legend=False)
-    plt.title('Độ ẩm trung bình giữa các khu vực', fontsize=16)
+    plt.title('Độ ẩm trung bình theo khu vực', fontsize=16)
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Độ ẩm trung bình (%)', fontsize=12)
     plt.grid(axis='y')
     addValueLabels(ax)
     plt.show()
 
+def drawUV():
     uv_location = data.groupby('Location')['UV Index'].mean().reset_index()
-    # Vẽ biểu đồ Line Plot cho UV theo khu vực
     plt.figure(figsize=(8, 6))
     ax = sns.lineplot(data=uv_location, x='Location', y='UV Index', marker='o', color='orange', linewidth=2.5)
-    plt.title('Biến động chỉ số UV giữa các khu vực', fontsize=16)
+    plt.title('Biến động chỉ số UV theo khu vực', fontsize=16)
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Chỉ số UV trung bình  ', fontsize=12)
     plt.grid(True)
     addValueLabels(ax)
-    plt.tight_layout()  # Điều chỉnh không gian giữa các nhãn
+    plt.tight_layout()  
     plt.show()
+
+# Menu để chọn biểu đồ
+def Draw():
+    while True:
+        print("\nChọn loại biểu đồ muốn vẽ:")
+        print("1. Nhiệt độ trung bình theo khu vực")
+        print("2. Tốc độ gió trung bình theo khu vực")
+        print("3. Khả năng có mưa theo khu vực")
+        print("4. Độ ẩm trung bình theo khu vực")
+        print("5. Biến động chỉ số UV theo khu vực")
+        print("6. Thoát")
+
+        choice = input("Nhập lựa chọn của bạn: ")
+        
+        if choice == '1':
+            drawNhietDo()
+        elif choice == '2':
+           drawSucGio()
+        elif choice == '3':
+            drawKhaNangMua()
+        elif choice == '4':
+           drawDoAm()
+        elif choice == '5':
+            drawUV()
+        elif choice == '6':
+            print("Thoát chương trình.")
+            break
+        else:
+            print("Lựa chọn không hợp lệ. Vui lòng thử lại.")
+
+

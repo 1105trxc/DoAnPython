@@ -1,6 +1,6 @@
 import pandas as pd
 
-file_path = r"d:\hocTap\CODE\3\DoAnPython\Cleaning\dataDaLamSach.csv"
+file_path = r"dataDaLamSach.csv"
 # Tải dữ liệu từ file CSV nếu có, nếu không sẽ tạo DataFrame trống với các cột phù hợp
 try:
     data = pd.read_csv(file_path)

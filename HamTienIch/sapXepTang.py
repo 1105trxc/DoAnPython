@@ -1,6 +1,6 @@
 import pandas as pd
-file_name = r"d:\hocTap\CODE\3\DoAnPython\Cleaning\dataDaLamSach.csv"  # File nguồn
-output_file = r"d:\hocTap\CODE\3\DoAnPython\Cleaning\outPut.csv"  # File kết quả
+file_name = r"dataDaLamSach.csv"  # File nguồn
+output_file = r"outPut.csv"  # File kết quả
 def sapXep(file_name, column_name, ascending=True, output_file=None):
       # Đọc dữ liệu từ file CSV
     df = pd.read_csv(file_name)
@@ -10,7 +10,7 @@ def sapXep(file_name, column_name, ascending=True, output_file=None):
     
     # Nếu không có output_file, sử dụng giá trị mặc định
     if output_file is None:
-        output_file = r"d:\hocTap\CODE\3\DoAnPython\Cleaning\outPut.csv"
+        output_file = r"outPut.csv"
 
     # Ghi kết quả ra file CSV mới
     df_sorted.to_csv(output_file, index=False)

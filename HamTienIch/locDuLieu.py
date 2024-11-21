@@ -38,8 +38,8 @@ def locDuLieuCsv(file_name, filter_condition, output_file):
         print(f"Lỗi trong quá trình lọc dữ liệu: {e}")  
         return None  
 def xuatLocDuLieu():
-    file_name = r"d:\hocTap\CODE\3\DoAnPython\Cleaning\dataDaLamSach.csv"  # File nguồn
-    output_file = r"d:\hocTap\CODE\3\DoAnPython\Cleaning\outPut.csv"  # File kết quả
+    file_name = r"dataDaLamSach.csv"  # File nguồn
+    output_file = r"outPut.csv"  # File kết quả
     
     print('1. Temperature (°C)')
     print('2. Humidity (%)')

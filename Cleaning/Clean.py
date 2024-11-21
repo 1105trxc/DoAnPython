@@ -3,7 +3,7 @@ import numpy as np
 
 # Đọc dữ liệu
 #data = pd.read_csv('weather_classification_data.csv', encoding='utf-8')
-data = pd.read_csv(r'd:\hocTap\CODE\3\DoAnPython\Cleaning\weather_classification_data.csv', encoding='utf-8') 
+data = pd.read_csv('weather_classification_data.csv', encoding='utf-8') 
 
 
 # 1. Kiểm tra giá trị null
