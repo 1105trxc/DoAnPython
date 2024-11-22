@@ -28,18 +28,18 @@ def Create(data):
 
         # Tạo hàng mới dưới dạng DataFrame để đảm bảo cấu trúc khớp với DataFrame gốc
         new_row = pd.DataFrame([{
-            'Temperature': temperature,
-            'Humidity': humidity,
-            'Wind Speed': wind_speed,
+            'Temperature (°C)': temperature,
+            'Humidity (%)': humidity,
+            'Wind Speed (mph)': wind_speed,
             'Precipitation (%)': precipitation,
             'Cloud Cover': cloud_cover,
-            'Atmospheric Pressure': pressure,
+            'Atmospheric Pressure (hPa)': pressure,
             'UV Index': uv_index,
             'Season': season,
             'Visibility (km)': visibility,
             'Location': location,
             'Weather Type': weather_type
-        }])
+        }], columns=data.columns)
 
         # Thêm hàng mới vào đầu DataFrame
         data = pd.concat([new_row, data], ignore_index=True)
