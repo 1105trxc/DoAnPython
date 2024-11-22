@@ -42,19 +42,24 @@ def main():
         elif choice == '8':
             sapXepTang.output_file = sapXepTang.sapXepTang()
         elif choice == '9':
-            print("Chọn loại dữ liệu muốn vẽ biểu đồ:")
-            print("1. Khu vực")
-            print("2. Mùa")
-            print("3. Heatmap")
-            k = int(input('Nhập lựa chọn của bạn: '))
-            while k < 1 or k > 4:
-                k = int(input('Không hợp lệ. Hãy nhập lại: '))
-            if k == 1:
-                bieuDoKhuVuc.data = bieuDoKhuVuc.Draw()
-            elif k == 2:
-                bieuDoMua.data = bieuDoMua.Draw()
-            elif k == 3:
-                heatMap.data = heatMap.Draw()
+            while True:
+                print("Chọn loại dữ liệu muốn vẽ biểu đồ (hoặc biểu đồ heatmap):")
+                print("1. Khu vực")
+                print("2. Mùa")
+                print("3. Heatmap")
+                print("4. Thoát")
+                k = int(input('Nhập lựa chọn của bạn: '))
+                while k < 1 or k > 4:
+                    k = int(input('Không hợp lệ. Hãy nhập lại: '))
+                if k == 1:
+                    bieuDoKhuVuc.data = bieuDoKhuVuc.Draw()
+                elif k == 2:
+                    bieuDoMua.data = bieuDoMua.Draw()
+                elif k == 3:
+                    heatMap.data = heatMap.Draw()
+                elif k == 4:
+                     print("Thoát chương trình.")
+                     break
         elif choice == '10':
             print("Thoát chương trình.")
             break

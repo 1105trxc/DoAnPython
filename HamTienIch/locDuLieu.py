@@ -1,6 +1,6 @@
 import pandas as pd  
 
-def locDuLieuTheoKhoangCoDinh(file_name, column, output_file):  
+def locKieuSo(file_name, column, output_file):  
     try:  
         # Đọc file CSV nguồn (file gốc)
         df = pd.read_csv(file_name)  
@@ -21,7 +21,7 @@ def locDuLieuTheoKhoangCoDinh(file_name, column, output_file):
         print(f"Lỗi trong quá trình lọc dữ liệu: {e}")  
         return None  
 
-def locDuLieuCsv(file_name, filter_condition, output_file):  
+def locKieuString(file_name, filter_condition, output_file):  
     try:  
         # Đọc file CSV nguồn (file gốc)
         df = pd.read_csv(file_name)  
@@ -59,13 +59,13 @@ def xuatLocDuLieu():
         n = int(input('Không hợp lệ. Hãy nhập lại: '))
     
     if n == 1:
-        locDuLieuTheoKhoangCoDinh(file_name, 'Temperature (°C)', output_file)
+        locKieuSo(file_name, 'Temperature (°C)', output_file)
     elif n == 2:
-        locDuLieuTheoKhoangCoDinh(file_name, 'Humidity (%)', output_file)
+        locKieuSo(file_name, 'Humidity (%)', output_file)
     elif n == 3:
-        locDuLieuTheoKhoangCoDinh(file_name, 'Wind Speed (mph)', output_file)
+        locKieuSo(file_name, 'Wind Speed (mph)', output_file)
     elif n == 4:
-        locDuLieuTheoKhoangCoDinh(file_name, 'Precipitation (%)', output_file)
+        locKieuSo(file_name, 'Precipitation (%)', output_file)
     elif n == 5:
         print('1. Partly cloudy')
         print('2. Clear')
@@ -75,15 +75,15 @@ def xuatLocDuLieu():
             k = int(input('Không hợp lệ. Hãy nhập lại: '))
         
         if k == 1:
-            locDuLieuCsv(file_name, lambda df: (df['Cloud Cover'] == 'Partly cloudy'), output_file)
+            locKieuString(file_name, lambda df: (df['Cloud Cover'] == 'Partly cloudy'), output_file)
         elif k == 2:
-            locDuLieuCsv(file_name, lambda df: (df['Cloud Cover'] == 'Clear'), output_file)
+            locKieuString(file_name, lambda df: (df['Cloud Cover'] == 'Clear'), output_file)
         elif k == 3:
-            locDuLieuCsv(file_name, lambda df: (df['Cloud Cover'] == 'Overcast'), output_file)
+            locKieuString(file_name, lambda df: (df['Cloud Cover'] == 'Overcast'), output_file)
     elif n == 6:
-        locDuLieuTheoKhoangCoDinh(file_name, 'Atmospheric Pressure (hPa)', output_file)
+        locKieuSo(file_name, 'Atmospheric Pressure (hPa)', output_file)
     elif n == 7:
-        locDuLieuTheoKhoangCoDinh(file_name, 'UV Index', output_file)
+        locKieuSo(file_name, 'UV Index', output_file)
     elif n == 8:
         print("1. Spring")
         print("2. Summer")
@@ -94,15 +94,15 @@ def xuatLocDuLieu():
             k = int(input('Không hợp lệ. Hãy nhập lại: '))
         
         if k == 1:
-            locDuLieuCsv(file_name, lambda df: (df['Season'] == 'Spring'), output_file)
+            locKieuString(file_name, lambda df: (df['Season'] == 'Spring'), output_file)
         elif k == 2:
-            locDuLieuCsv(file_name, lambda df: (df['Season'] == 'Summer'), output_file)
+            locKieuString(file_name, lambda df: (df['Season'] == 'Summer'), output_file)
         elif k == 3:
-            locDuLieuCsv(file_name, lambda df: (df['Season'] == 'Autumn'), output_file)
+            locKieuString(file_name, lambda df: (df['Season'] == 'Autumn'), output_file)
         elif k == 4:
-            locDuLieuCsv(file_name, lambda df: (df['Season'] == 'Winter'), output_file)
+            locKieuString(file_name, lambda df: (df['Season'] == 'Winter'), output_file)
     elif n == 9:
-        locDuLieuTheoKhoangCoDinh(file_name, 'Visibility (km)', output_file)
+        locKieuSo(file_name, 'Visibility (km)', output_file)
     elif n == 10:
         print("1. Inland")
         print("2. Mountain")
@@ -112,11 +112,11 @@ def xuatLocDuLieu():
             k = int(input('Không hợp lệ. Hãy nhập lại: '))
         
         if k == 1:
-            locDuLieuCsv(file_name, lambda df: (df['Location'] == 'Inland'), output_file)
+            locKieuString(file_name, lambda df: (df['Location'] == 'Inland'), output_file)
         elif k == 2:
-            locDuLieuCsv(file_name, lambda df: (df['Location'] == 'Mountain'), output_file)
+            locKieuString(file_name, lambda df: (df['Location'] == 'Mountain'), output_file)
         elif k == 3:
-            locDuLieuCsv(file_name, lambda df: (df['Location'] == 'Coastal'), output_file)
+            locKieuString(file_name, lambda df: (df['Location'] == 'Coastal'), output_file)
     else:
         print("1. Rainy")
         print("2. Cloudy")
@@ -127,10 +127,10 @@ def xuatLocDuLieu():
             k = int(input('Không hợp lệ. Hãy nhập lại: '))
         
         if k == 1:
-            locDuLieuCsv(file_name, lambda df: (df['Weather Type'] == 'Rainy'), output_file)
+            locKieuString(file_name, lambda df: (df['Weather Type'] == 'Rainy'), output_file)
         elif k == 2:
-            locDuLieuCsv(file_name, lambda df: (df['Weather Type'] == 'Cloudy'), output_file)
+            locKieuString(file_name, lambda df: (df['Weather Type'] == 'Cloudy'), output_file)
         elif k == 3:
-            locDuLieuCsv(file_name, lambda df: (df['Weather Type'] == 'Sunny'), output_file)
+            locKieuString(file_name, lambda df: (df['Weather Type'] == 'Sunny'), output_file)
         elif k == 4:
-            locDuLieuCsv(file_name, lambda df: (df['Weather Type'] == 'Snowy'), output_file)
+            locKieuString(file_name, lambda df: (df['Weather Type'] == 'Snowy'), output_file)
