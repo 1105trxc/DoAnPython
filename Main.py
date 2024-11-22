@@ -18,13 +18,11 @@ def main():
         print("6. Lọc dữ liệu")
         print("7. Sắp xếp dữ liệu tăng dần")
         print("8. Sắp xếp dữ liệu giảm dần")
-        print("9. Vẽ biểu đồ theo khu vực")
-        print("10. Vẽ biểu đồ theo mùa")
-        print("11. Vẽ biểu đồ heat map")
-        print("12. Thoát chương trình")
+        print("9. Vẽ biểu đồ")
+        print("10. Thoát chương trình")
 
         # Yêu cầu người dùng chọn chức năng
-        choice = input("Chọn chức năng (1-12): ").strip()
+        choice = input("Chọn chức năng (1-10): ").strip()
 
         # Thực hiện chức năng tương ứng
         if choice == '1':
@@ -44,12 +42,20 @@ def main():
         elif choice == '8':
             sapXepTang.output_file = sapXepTang.sapXepTang()
         elif choice == '9':
-            bieuDoKhuVuc.data = bieuDoKhuVuc.Draw()
+            print("Chọn loại dữ liệu muốn vẽ biểu đồ:")
+            print("1. Khu vực")
+            print("2. Mùa")
+            print("3. Heatmap")
+            k = int(input('Nhập lựa chọn của bạn: '))
+            while k < 1 or k > 4:
+                k = int(input('Không hợp lệ. Hãy nhập lại: '))
+            if k == 1:
+                bieuDoKhuVuc.data = bieuDoKhuVuc.Draw()
+            elif k == 2:
+                bieuDoMua.data = bieuDoMua.Draw()
+            elif k == 3:
+                heatMap.data = heatMap.Draw()
         elif choice == '10':
-            bieuDoMua.data = bieuDoMua.Draw()
-        elif choice == '11':
-            heatMap.data = heatMap.Draw()
-        elif choice == '12':
             print("Thoát chương trình.")
             break
         else:

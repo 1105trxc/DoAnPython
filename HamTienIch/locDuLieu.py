@@ -15,7 +15,7 @@ def locDuLieuTheoKhoangCoDinh(file_name, column, output_file):
         # Lưu file kết quả  
         df_filtered.to_csv(output_file, index=False)  
         
-        print(f"Đã lọc và lưu {len(df_filtered)} dòng dữ liệu vào {output_file}")  
+        print(f"Đã lọc và lưu dữ liệu vào {output_file}")  
         return df_filtered  
     except Exception as e:  
         print(f"Lỗi trong quá trình lọc dữ liệu: {e}")  
