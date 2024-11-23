@@ -104,6 +104,7 @@ class CSVApp:
             ("Tốc độ gió trung bình theo khu vực", drawSucGio),
             ("Khả năng có mưa theo khu vực", drawKhaNangMua),
             ("Độ ẩm trung bình theo khu vực", drawDoAm),
+            ("Biến động chỉ số UV theo khu vực", drawUV),
         ]
 
         options_theo_mua = [
