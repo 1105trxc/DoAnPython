@@ -25,7 +25,7 @@ def addValueLabelsLine(ax):
                         color='black')
 
 # Hàm vẽ các biểu đồ
-def drawNhietDo():
+def drawNhietDoTheoMua():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Season', y='Temperature (°C)', errorbar=None, hue='Season', legend=False)
     plt.title('Nhiệt độ trung bình theo mùa', fontsize=16)
@@ -35,7 +35,7 @@ def drawNhietDo():
     addValueLabels(ax)
     plt.show()
 
-def drawSucGio():
+def drawSucGioTheoMua():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Season', y='Wind Speed (mph)', errorbar=None, hue='Season', legend=False)
     plt.title('Tốc độ Gió trung bình theo mùa', fontsize=16)
@@ -55,7 +55,7 @@ def drawKhaNangMua():
     addValueLabels(ax)
     plt.show()
 
-def drawDoAm():
+def drawDoAmTheoMua():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Season', y='Humidity (%)', errorbar=None, hue='Season', legend=False)
     plt.title('Độ ẩm trung bình theo mùa', fontsize=16)
@@ -65,7 +65,7 @@ def drawDoAm():
     addValueLabels(ax)
     plt.show()
 
-def drawUV():
+def drawUVTheoMua():
     uv_season = data.groupby('Season')['UV Index'].mean().reset_index()
     plt.figure(figsize=(8, 6))
     ax = sns.lineplot(data=uv_season, x='Season', y='UV Index', marker='o', color='orange', linewidth=2.5)

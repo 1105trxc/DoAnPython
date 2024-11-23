@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from VeBieuDo.bieuDoTheoKhuVuc import *  # Import tất cả các hàm từ bieuDoTheoKhuVuc.py
 from HamTienIch.locDuLieu import * # Import tất cả các hàm từ locDuLieu.py
-from 
+from VeBieuDo.bieuDoTheoMua import *
 file_path = r"dataDaLamSach.csv"
 try:
     data = pd.read_csv(file_path)
@@ -86,7 +86,13 @@ class CSVApp:
             ("Tốc độ gió trung bình theo khu vực", drawSucGio),
             ("Khả năng có mưa theo khu vực", drawKhaNangMua),
             ("Độ ẩm trung bình theo khu vực", drawDoAm),
-            ("Biến động chỉ số UV theo khu vực", drawUV),
+            ("Nhiệt độ trung bình theo mùa", drawNhietDoTheoMua),
+            ("Tốc độ gió trung bình theo mùa", drawSucGioTheoMua),
+            ("Khả năng mưa", drawKhaNangMua),
+            ("Độ ẩm trung bình theo mùa", drawDoAmTheoMua),
+            ("Biến động chỉ số UV theo mùa", drawUVTheoMua),
+            
+
         ]
 
         for label, func in options:
