@@ -2,15 +2,16 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import pandas as pd
 import matplotlib.pyplot as plt
-from VeBieuDo.bieuDoTheoKhuVuc import *  # Import tất cả các hàm từ bieuDoTheoKhuVuc.py
-from HamTienIch.locDuLieu import * # Import tất cả các hàm từ locDuLieu.py
+from VeBieuDo.bieuDoTheoKhuVuc import *  
+from HamTienIch.locDuLieu import * 
 from VeBieuDo.bieuDoTheoMua import *
+from VeBieuDo.heatMap import *
 file_path = r"dataDaLamSach.csv"
 try:
     data = pd.read_csv(file_path)
 except FileNotFoundError:
     messagebox.showerror("Error", f"File {file_path} not found!")
-    data = pd.DataFrame()  # Nếu không có dữ liệu, khởi tạo DataFrame rỗng
+    data = pd.DataFrame()  
 
 class CSVApp:
     def __init__(self, root):
@@ -80,25 +81,55 @@ class CSVApp:
 
         menu = tk.Toplevel()
         menu.title("Chọn biểu đồ để hiển thị")
+        menu.geometry("400x300")
 
-        options = [
+        # Tạo Notebook để chia tab
+        notebook = ttk.Notebook(menu)
+        notebook.pack(fill=tk.BOTH, expand=True)
+
+        # Tab "Vẽ theo khu vực"
+        tab_khu_vuc = ttk.Frame(notebook)
+        notebook.add(tab_khu_vuc, text="Vẽ theo khu vực")
+
+        # Tab "Vẽ theo mùa"
+        tab_theo_mua = ttk.Frame(notebook)
+        notebook.add(tab_theo_mua, text="Vẽ theo mùa")
+
+        tab_heat = ttk.Frame(notebook)
+        notebook.add(tab_heat, text="Vẽ heatmap")
+
+        # Danh sách biểu đồ
+        options_khu_vuc = [
             ("Nhiệt độ trung bình theo khu vực", drawNhietDo),
             ("Tốc độ gió trung bình theo khu vực", drawSucGio),
             ("Khả năng có mưa theo khu vực", drawKhaNangMua),
             ("Độ ẩm trung bình theo khu vực", drawDoAm),
-            ("Nhiệt độ trung bình theo mùa", drawNhietDoTheoMua),
-            ("Tốc độ gió trung bình theo mùa", drawSucGioTheoMua),
-            ("Khả năng mưa", drawKhaNangMua),
-            ("Độ ẩm trung bình theo mùa", drawDoAmTheoMua),
-            ("Biến động chỉ số UV theo mùa", drawUVTheoMua),
-            
-
         ]
 
-        for label, func in options:
-            btn = ttk.Button(menu, text=label, command=lambda f=func: show_plot(f))
+        options_theo_mua = [
+            ("Nhiệt độ trung bình theo mùa", drawNhietDoTheoMua),
+            ("Tốc độ gió trung bình theo mùa", drawSucGioTheoMua),
+            ("Khả năng có mưa theo mùa", drawKhaNangMua),
+            ("Độ ẩm trung bình theo mùa", drawDoAmTheoMua),
+            ("Biến động chỉ số UV theo mùa", drawUVTheoMua),
+        ]
+        options_heatmap = [
+            ("Heatmap",DrawHeatMap),]
+
+        # Thêm các nút vào tab "Vẽ theo khu vực"
+        for label, func in options_khu_vuc:
+            btn = ttk.Button(tab_khu_vuc, text=label, command=lambda f=func: show_plot(f))
             btn.pack(fill=tk.X, padx=10, pady=5)
 
+        # Thêm các nút vào tab "Vẽ theo mùa"
+        for label, func in options_theo_mua:
+            btn = ttk.Button(tab_theo_mua, text=label, command=lambda f=func: show_plot(f))
+            btn.pack(fill=tk.X, padx=10, pady=5)
+
+        for label, func in options_heatmap:
+            btn = ttk.Button(tab_heat, text=label, command=lambda f=func: show_plot(f))
+            btn.pack(fill=tk.X, padx=10, pady=5)
+        # Nút đóng ở cuối cửa sổ
         ttk.Button(menu, text="Đóng", command=menu.destroy).pack(pady=10)
 
     def save_csv(self):
