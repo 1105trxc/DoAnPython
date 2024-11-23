@@ -73,7 +73,6 @@ def drawUV():
     plt.ylabel('Chỉ số UV trung bình  ', fontsize=12)
     plt.grid(True)
     addValueLabels(ax)
-    plt.tight_layout()  
     plt.show()
 
 # Menu để chọn biểu đồ
