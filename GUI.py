@@ -21,19 +21,6 @@ class CSVApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Đồ án cuối kì")
-        
-        # try:
-        #     self.data = pd.read_csv("dataDaLamSach.csv")  # Tải dữ liệu từ file
-        #     self.original_data = self.data.copy()        # Lưu lại dữ liệu gốc
-        #     messagebox.showinfo("Thành công", "Dữ liệu đã được tải thành công.")
-        # except FileNotFoundError:
-        #     messagebox.showerror("Lỗi", "Không tìm thấy file dữ liệu!")  # Thông báo lỗi nếu không tìm thấy file
-        #     self.data = pd.DataFrame()           # Khởi tạo DataFrame rỗng
-        #     self.original_data = pd.DataFrame()  # Dữ liệu gốc cũng rỗng
-        # except Exception as e:
-        #     messagebox.showerror("Lỗi", f"Đã xảy ra lỗi: {str(e)}")  # Thông báo lỗi nếu xảy ra vấn đề khác
-        #     self.data = pd.DataFrame()           # Khởi tạo DataFrame rỗng
-        #     self.original_data = pd.DataFrame()  # Dữ liệu gốc cũng rỗng
         # # Initialize data
         self.data = data.copy()
         self.original_data = self.data.copy()  
@@ -68,8 +55,8 @@ class CSVApp:
         ttk.Button(self.control_frame, text="Add Row", command=self.add_row).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Delete Row", command=self.delete_row).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Visualize", command=self.visualize_data).pack(fill=tk.X, padx=5, pady=5)
-        ttk.Button(self.control_frame, text="Sort", command=self.sort_data).pack(fill=tk.X, padx=5, pady=5)
-        ttk.Button(self.control_frame, text="Filter", command=self.show_data_window).pack(fill=tk.X, padx=5, pady=5)
+        ttk.Button(self.control_frame, text="Sort", command=self.filter_data).pack(fill=tk.X, padx=5, pady=5)
+        ttk.Button(self.control_frame, text="Filter", command=self.filter_data).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Update", command=self.show_data_window).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Save CSV", command=self.save_csv).pack(fill=tk.X, padx=5, pady=5)
     
@@ -308,7 +295,7 @@ class CSVApp:
         # Nút đóng ở cuối cửa sổ
         ttk.Button(menu, text="Đóng", command=menu.destroy).pack(pady=10)
 
-    def sort_data(self):
+    def filter_data(self):
         """Hàm tạo cửa sổ lọc với hai tab riêng biệt cho lọc số và lọc chuỗi"""
         # Tạo cửa sổ con
         sort_window = tk.Toplevel(self.root)
