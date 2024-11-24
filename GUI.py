@@ -58,8 +58,8 @@ class CSVApp:
         ttk.Button(self.control_frame, text="Filter", command=self.show_data_window).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Update", command=self.show_data_window).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Save CSV", command=self.save_csv).pack(fill=tk.X, padx=5, pady=5)
-
-    def show_data_window(self):
+    '''
+    def show_data_window(self,additional_button=None):
         """Hiển thị dữ liệu trong một cửa sổ mới."""
         
         if self.data.empty:
@@ -88,9 +88,82 @@ class CSVApp:
             self.tree.insert("", tk.END, values=list(row))
         self.tree.pack(fill=tk.BOTH, expand=True)
 
+        if additional_button:
+            additional_button(data_window, self.tree)
+
         # Nút đóng cửa sổ
         ttk.Button(data_window, text="Close", command=data_window.destroy).pack(pady=10)
+    '''
+
+    def show_data_window(self, additional_button=None, rows_per_page=10):
+        """Hiển thị dữ liệu trong một cửa sổ mới với phân trang"""
+        if self.data.empty:
+            messagebox.showwarning("Warning", "No data to display!")
+            return
         
+        # Tạo cửa sổ mới
+        data_window = tk.Toplevel(self.root)
+        data_window.title("Data View")
+        data_window.geometry("500x400")
+        self.center_toplevel(data_window, 500, 400)
+        
+        # Frame chứa Treeview
+        frame = ttk.Frame(data_window)
+        frame.pack(fill=tk.BOTH, expand=True)
+        # Tạo Treeview
+        self.tree = ttk.Treeview(frame, columns=list(self.data.columns), show="headings")
+        for col in self.data.columns:
+            self.tree.heading(col, text=col)
+            self.tree.column(col, width=150, anchor=tk.CENTER)
+        self.tree.pack(fill=tk.BOTH, expand=True)
+        # Gọi hàm Read 
+        current_page = 1
+        page_data, total_pages = Read(self.data, page=current_page, page_size=rows_per_page)
+
+        # Thêm dữ liệu vào Treeview
+        def load_page_data(page):
+            page_data, _ = Read(self.data, page=page, page_size=rows_per_page)
+            # Xóa dữ liệu cũ trong Treeview
+            for item in self.tree.get_children():
+                self.tree.delete(item)
+            # Thêm dữ liệu mới
+            for _, row in page_data.iterrows():
+                self.tree.insert("", tk.END, values=list(row))
+        load_page_data(current_page)
+
+        # Nút chuyển trang
+        def next_page():
+            nonlocal current_page
+            if current_page < total_pages:
+                current_page += 1
+                load_page_data(current_page)
+                page_label.config(text=f"Page {current_page}/{total_pages}")
+        def prev_page():
+            nonlocal current_page
+            if current_page > 1:
+                current_page -= 1
+                load_page_data(current_page)
+                page_label.config(text=f"Page {current_page}/{total_pages}")
+        # Tạo thanh điều hướng
+        nav_frame = ttk.Frame(data_window)
+        nav_frame.pack(fill=tk.X, pady=10)
+
+        page_label = ttk.Label(nav_frame, text=f"Page {current_page}/{total_pages}")
+        page_label.pack(side=tk.LEFT)
+
+        # Nút chuyển trang tiếp theo
+        prev_button = ttk.Button(nav_frame, text="Previous Page", command=prev_page)
+        prev_button.pack(side=tk.LEFT, padx=10, pady=10)
+       
+        # Nút quay lại trang trước
+        next_button = ttk.Button(nav_frame, text="Next Page", command=next_page)
+        next_button.pack(side=tk.LEFT, padx=10, pady=10)
+        
+        if additional_button:
+            additional_button(data_window, self.tree)
+
+        # Nút đóng cửa sổ
+        ttk.Button(data_window, text="Close", command=data_window.destroy).pack(pady=10)    
     def center_toplevel(self, window, width, height):
         """Đặt cửa sổ con ở giữa màn hình."""
         screen_width = window.winfo_screenwidth()
@@ -102,6 +175,7 @@ class CSVApp:
         window.geometry(f"{width}x{height}+{x}+{y}")
 
     def add_row(self):
+
         """Add a new row to the data by calling Create from CRUD."""
         # Tạo cửa sổ nhập liệu
         input_window = tk.Toplevel(self.root)
@@ -135,7 +209,6 @@ class CSVApp:
                 data_input = {label: entries[label].get() for label in labels}
                 # Thêm hàng mới vào DataFrame thông qua hàm Create
                 self.data = Create(self.data, data_input)
-                #self.save_csv()
                 messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")
                 input_window.destroy()  # Đóng cửa sổ nhập liệu
 
@@ -144,17 +217,35 @@ class CSVApp:
 
         # Nút thêm dữ liệu
         ttk.Button(input_window, text="Thêm", command=on_add).pack(pady=10)
-
     def delete_row(self):
-        """Delete selected row."""
-        selected_item = self.tree.selection()
-        if not selected_item:
-            messagebox.showwarning("Warning", "No row selected!")
+        """Hiển thị cửa sổ để người dùng chọn dòng cần xóa."""
+        if self.data.empty:
+            messagebox.showerror("Lỗi", "Không có dữ liệu để xóa.")
             return
-        row_id = self.tree.index(selected_item[0])
-        self.data = self.data.drop(index=row_id).reset_index(drop=True)
-        self.load_data_to_tree()
-    
+
+        # Hàm xử lý khi chọn dòng để xóa
+        def on_delete(data_window, tree):
+            selected_item = tree.selection()
+            if selected_item:
+                # Lấy chỉ số dòng từ Treeview
+                selected_row = tree.index(selected_item[0])  # Lấy chỉ số dòng của phần tử được chọn
+                # Gọi hàm Delete để xóa dòng
+                self.data = Delete(self.data, selected_row)
+                # Cập nhật lại bảng dữ liệu
+                for item in tree.get_children():
+                    tree.delete(item)
+                for index, row in self.data.iterrows():
+                    tree.insert("", "end", values=row.tolist())
+                messagebox.showinfo("Thông báo", "Xóa thành công!")
+            else:
+                messagebox.showwarning("Cảnh báo", "Vui lòng chọn một dòng để xóa.")
+
+        def add_delete_button(data_window, tree):
+            ttk.Button(data_window, text="Xóa", command=lambda: on_delete(data_window, tree)).pack(pady=10)
+        
+        # Hiển thị cửa sổ dữ liệu và thêm nút xóa
+        self.show_data_window(additional_button=add_delete_button)
+
     def visualize_data(self):
         """Hiển thị menu để vẽ biểu đồ."""
         def show_plot(plot_function):
@@ -183,22 +274,21 @@ class CSVApp:
 
         # Danh sách biểu đồ
         options_khu_vuc = [
-            ("Nhiệt độ trung bình theo khu vực", drawNhietDo),
-            ("Tốc độ gió trung bình theo khu vực", drawSucGio),
-            ("Khả năng có mưa theo khu vực", drawKhaNangMua),
-            ("Độ ẩm trung bình theo khu vực", drawDoAm),
-            ("Biến động chỉ số UV theo khu vực", drawUV),
+            ("Nhiệt độ trung bình theo khu vực", drawNhietDoTheoKhuVuc),
+            ("Tốc độ gió trung bình theo khu vực", drawSucGioTheoKhuVuc),
+            ("Khả năng có mưa theo khu vực", drawKhaNangMuaTheoKhuVuc),
+            ("Độ ẩm trung bình theo khu vực", drawDoAmTheoKhuVuc),
+            ("Biến động chỉ số UV theo khu vực", drawUVTheoKhuVuc)
         ]
 
         options_theo_mua = [
             ("Nhiệt độ trung bình theo mùa", drawNhietDoTheoMua),
             ("Tốc độ gió trung bình theo mùa", drawSucGioTheoMua),
-            ("Khả năng có mưa theo mùa", drawKhaNangMua),
-            ("Độ ẩm trung bình theo mùa", drawDoAmTheoMua),
-            ("Biến động chỉ số UV theo mùa", drawUVTheoMua),
+            ("Khả năng có mưa theo mùa", drawKhaNangMuaTheoMua),
+            ("Biến động chỉ số UV theo mùa", drawUVTheoMua)
         ]
         options_heatmap = [
-            ("Heatmap", DrawHeatMap),
+            ("Heatmap", DrawHeatMap)
         ]
 
         # Thêm các nút vào tab "Vẽ theo khu vực"
@@ -218,7 +308,6 @@ class CSVApp:
 
         # Nút đóng ở cuối cửa sổ
         ttk.Button(menu, text="Đóng", command=menu.destroy).pack(pady=10)
-             
     def save_csv(self):
         """Save data to the same CSV file."""
         try:
@@ -226,7 +315,6 @@ class CSVApp:
             messagebox.showinfo("Thông báo", "Dữ liệu đã được lưu vào dataDaLamSach.csv")
         except Exception as e:
             messagebox.showerror("Lỗi", f"Không thể lưu dữ liệu: {str(e)}")
-
 # Run the application
 root = tk.Tk()
 app = CSVApp(root)

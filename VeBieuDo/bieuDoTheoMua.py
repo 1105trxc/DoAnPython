@@ -45,7 +45,7 @@ def drawSucGioTheoMua():
     addValueLabels(ax)
     plt.show()
 
-def drawKhaNangMua():
+def drawKhaNangMuaTheoMua():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Season', y='Precipitation (%)', errorbar=None, hue='Season', legend=False)
     plt.title('Khả năng có mưa theo mùa', fontsize=16)
@@ -90,15 +90,15 @@ def Draw():
         choice = input("Nhập lựa chọn của bạn: ")
         
         if choice == '1':
-            drawNhietDo()
+            drawNhietDoTheoMua()
         elif choice == '2':
-           drawSucGio()
+           drawSucGioTheoMua()
         elif choice == '3':
-            drawKhaNangMua()
+            drawKhaNangMuaTheoMua()
         elif choice == '4':
-           drawDoAm()
+           drawDoAmTheoMua()
         elif choice == '5':
-            drawUV()
+            drawUVTheoMua()
         elif choice == '6':
             print("Thoát chương trình.")
             break

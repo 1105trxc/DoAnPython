@@ -24,7 +24,7 @@ def addValueLabels(ax):
                         color='black')
 
 # Hàm vẽ các biểu đồ
-def drawNhietDo():
+def drawNhietDoTheoKhuVuc():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Location', y='Temperature (°C)', errorbar=None, hue='Location', legend=False)
     plt.title('Nhiệt độ trung bình theo khu vực', fontsize=16)
@@ -34,7 +34,7 @@ def drawNhietDo():
     addValueLabels(ax)
     plt.show()
 
-def drawSucGio():
+def drawSucGioTheoKhuVuc():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Location', y='Wind Speed (mph)', errorbar=None, hue='Location', legend=False)
     plt.title('Tốc độ Gió trung bình theo khu vực', fontsize=16)
@@ -44,7 +44,7 @@ def drawSucGio():
     addValueLabels(ax)
     plt.show()
 
-def drawKhaNangMua():
+def drawKhaNangMuaTheoKhuVuc():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Location', y='Precipitation (%)', errorbar=None, hue='Location', legend=False)
     plt.title('Khả năng có mưa theo khu vực', fontsize=16)
@@ -54,7 +54,7 @@ def drawKhaNangMua():
     addValueLabels(ax)
     plt.show()
 
-def drawDoAm():
+def drawDoAmTheoKhuVuc():
     plt.figure(figsize=(10, 6))
     ax = sns.barplot(data=data, x='Location', y='Humidity (%)', errorbar=None, hue='Location', legend=False)
     plt.title('Độ ẩm trung bình theo khu vực', fontsize=16)
@@ -64,7 +64,7 @@ def drawDoAm():
     addValueLabels(ax)
     plt.show()
 
-def drawUV():
+def drawUVTheoKhuVuc():
     uv_location = data.groupby('Location')['UV Index'].mean().reset_index()
     plt.figure(figsize=(8, 6))
     ax = sns.lineplot(data=uv_location, x='Location', y='UV Index', marker='o', color='orange', linewidth=2.5)
@@ -89,15 +89,15 @@ def Draw():
         choice = input("Nhập lựa chọn của bạn: ")
         
         if choice == '1':
-            drawNhietDo()
+            drawNhietDoTheoKhuVuc()
         elif choice == '2':
-           drawSucGio()
+           drawSucGioTheoKhuVuc()
         elif choice == '3':
-            drawKhaNangMua()
+            drawKhaNangMuaTheoKhuVuc()
         elif choice == '4':
-           drawDoAm()
+           drawDoAmTheoKhuVuc()
         elif choice == '5':
-            drawUV()
+            drawUVTheoKhuVuc()
         elif choice == '6':
             print("Thoát chương trình.")
             break

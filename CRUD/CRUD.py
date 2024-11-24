@@ -1,5 +1,4 @@
 import pandas as pd
-
 file_path = r"dataDaLamSach.csv"
 # Tải dữ liệu từ file CSV nếu có, nếu không sẽ tạo DataFrame trống với các cột phù hợp
 try:
@@ -50,70 +49,67 @@ def Create(data, data_input):
 
 
 # Hàm xóa dữ liệu
-def Delete(data):
+def Delete(data, selected_row):
+    """Xóa dòng dữ liệu tại chỉ số selected_row."""
     try:
+        # Kiểm tra nếu DataFrame không trống
         if data.empty:
             print("Không tồn tại dữ liệu để xóa.")
             return data
 
-        # Người dùng nhập chỉ số dòng bắt đầu từ 1 (tức là dòng đầu tiên trong data)
-        row_to_delete = int(input("Nhập vào số dòng muốn xóa (bắt đầu là 1): ")) - 1
-
-        # Kiểm tra phạm vi hợp lệ
-        if 0 <= row_to_delete < len(data):
+        # Kiểm tra phạm vi chỉ số hợp lệ
+        if 0 <= selected_row < len(data):
             # Xóa dòng và reset lại chỉ mục
-            data = data.drop(index=row_to_delete).reset_index(drop=True)
+            data = data.drop(index=selected_row).reset_index(drop=True)
             print("Xóa thành công!")
         else:
-            print("Giá trị cột nhập vào không hợp lệ. Hãy nhập lại.")
-
+            print("Chỉ số dòng không hợp lệ.")
+        
+        return data
+    
+    except Exception as e:
+        print(f"Lỗi xảy ra khi xóa: {str(e)}")
         return data
 
-    except ValueError:
-        print("Giá trị nhập vào không hợp lệ.")
-        return data
 
-
+'''
 # Hàm đọc dữ liệu
 def Read(data, rows_per_page=10):
-    # Kiểm tra dữ liệu đầu vào
+    """Phân trang và trả về một hàm để lấy dữ liệu cho từng trang."""
     if data.empty:
-        print("Không tồn tại dữ liệu.")
-        return
-
+        return None, 0  # Trả về None và 0 trang nếu không có dữ liệu
+    
     # Tổng số dòng và số trang
     total_rows = len(data)
     total_pages = (total_rows + rows_per_page - 1) // rows_per_page  # Tính số trang cần thiết
 
-    def print_page(page):
+    # Hàm hiển thị dữ liệu trên một trang
+    def display_page(page):
         start_idx = (page - 1) * rows_per_page  # Chỉ số bắt đầu
         end_idx = min(start_idx + rows_per_page, total_rows)  # Chỉ số kết thúc
-        page_data = data.iloc[start_idx:end_idx].copy()  # Lấy dữ liệu trang
-        page_data.index = range(start_idx + 1, end_idx + 1)  # Đặt lại chỉ số dòng
-        print(f"\nTrang {page}/{total_pages}:")
-        print(page_data)
+        page_data = data.iloc[start_idx:end_idx]  # Lấy dữ liệu của trang hiện tại
+        return page_data
 
-    current_page = 1  # Khởi tạo trang đầu tiên
-    while True:
-        # Hiển thị dữ liệu của trang hiện tại
-        print_page(current_page)
+    return display_page, total_pages
+'''
 
-        # Yêu cầu người dùng nhập hành động
-        action = input(
-            f"\nNhập 'n' để sang trang tiếp theo, 'p' về lại trang ở trước, 'q' để thoát (trang hiện tại: {current_page}): "
-        ).strip().lower()
+def Read(data, page=1, page_size=10):
+    
+    try:
+        # Xác định tổng số trang
+        total_rows = len(data)
+        total_pages = (total_rows + page_size - 1) // page_size
+        
+        # Xác định chỉ số bắt đầu và kết thúc của trang hiện tại
+        start_idx = (page - 1) * page_size
+        end_idx = start_idx + page_size
 
-        # Xử lý hành động
-        if action == 'n' and current_page < total_pages:  # Trang tiếp theo
-            current_page += 1
-        elif action == 'p' and current_page > 1:  # Trang trước
-            current_page -= 1
-        elif action == 'q':  # Thoát
-            print("Thoát chế độ xem.")
-            break
-        else:  # Xử lý đầu vào không hợp lệ
-            print("Không hợp lệ.")
+        # Lấy dữ liệu của trang hiện tại
+        page_data = data.iloc[start_idx:end_idx]
 
+        return page_data, total_pages
+    except Exception as e:
+        raise ValueError(f"Error reading the file: {e}")
 
 # Hàm cập nhật dữ liệu
 def Update(data):
