@@ -1,42 +1,53 @@
 import pandas as pd  
 
-def locKieuSo(file_name, column, output_file):  
-    try:  
-        # Đọc file CSV nguồn (file gốc)
-        df = pd.read_csv(file_name)  
+def locKieuSo(df, column, min_val, max_val):
+    try:
+        # Kiểm tra nếu cột không tồn tại trong DataFrame
+        if column not in df.columns:
+            print(f"Cột '{column}' không tồn tại trong dữ liệu.")
+            return None
         
-        # Nhập khoảng lọc từ người dùng  
-        min_val = float(input(f"Nhập giá trị tối thiểu cho {column}: "))  
-        max_val = float(input(f"Nhập giá trị tối đa cho {column}: "))  
-        
-        # Lọc dữ liệu  
-        df_filtered = df[(df[column] >= min_val) & (df[column] <= max_val)]  
-        
-        # Lưu file kết quả  
-        df_filtered.to_csv(output_file, index=False)  
-        
-        print(f"Đã lọc và lưu dữ liệu vào {output_file}")  
-        return df_filtered  
-    except Exception as e:  
-        print(f"Lỗi trong quá trình lọc dữ liệu: {e}")  
-        return None  
+        # Kiểm tra nếu cột có kiểu dữ liệu số
+        if not pd.api.types.is_numeric_dtype(df[column]):
+            print(f"Cột '{column}' không phải là kiểu số.")
+            return None
 
-def locKieuString(file_name, filter_condition, output_file):  
-    try:  
-        # Đọc file CSV nguồn (file gốc)
-        df = pd.read_csv(file_name)  
+        # Lọc dữ liệu
+        df_filtered = df[(df[column] >= min_val) & (df[column] <= max_val)]
         
-        # Lọc dữ liệu theo điều kiện  
-        df_filtered = df[filter_condition(df)]  
-        
-        # Lưu file kết quả  
-        df_filtered.to_csv(output_file, index=False)  
-        
-        print(f"Đã lọc và lưu {len(df_filtered)} dòng dữ liệu vào {output_file}")  
-        return df_filtered  
-    except Exception as e:  
-        print(f"Lỗi trong quá trình lọc dữ liệu: {e}")  
-        return None  
+        # Kiểm tra nếu không có dòng nào thỏa mãn
+        if df_filtered.empty:
+            print(f"Không có dữ liệu thỏa mãn điều kiện lọc: {min_val} <= {column} <= {max_val}")
+            return None
+        return df_filtered
+    except ValueError:
+        print("Lỗi: Giá trị nhập vào không hợp lệ.")
+        return None
+    except Exception as e:
+        print(f"Lỗi trong quá trình lọc dữ liệu: {e}")
+        return None
+
+
+def locKieuString(df,filter_condition):
+    #Lọc dữ liệu kiểu chuỗi từ file CSV dựa trên một điều kiện và hiển thị kết quả.
+    try:
+        # Lọc dữ liệu theo điều kiện
+        df_filtered = df[filter_condition(df)]
+
+        # Kiểm tra nếu không có dữ liệu sau khi lọc
+        if df_filtered.empty:
+            print("Không có dữ liệu thỏa mãn điều kiện lọc.")
+            return None
+
+        # Hiển thị kết quả lọc
+        print("Dữ liệu sau khi lọc:")
+        print(df_filtered)
+
+        return df_filtered
+    except Exception as e:
+        print(f"Lỗi trong quá trình lọc dữ liệu: {e}")
+        return None
+  
 def xuatLocDuLieu():
     file_name = r"dataDaLamSach.csv"  # File nguồn
     output_file = r"outPut.csv"  # File kết quả
