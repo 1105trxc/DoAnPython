@@ -58,43 +58,7 @@ class CSVApp:
         ttk.Button(self.control_frame, text="Filter", command=self.show_data_window).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Update", command=self.show_data_window).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Save CSV", command=self.save_csv).pack(fill=tk.X, padx=5, pady=5)
-    '''
-    def show_data_window(self,additional_button=None):
-        """Hiển thị dữ liệu trong một cửa sổ mới."""
-        
-        if self.data.empty:
-            messagebox.showwarning("Warning", "No data to display!")
-            return
-        
-        # Tạo cửa sổ mới
-        data_window = tk.Toplevel(self.root)
-        data_window.title("Data View")
-        data_window.geometry("400x300")
-        
-        self.center_toplevel(data_window, 400, 300)
-        
-        # Frame chứa Treeview
-        frame = ttk.Frame(data_window)
-        frame.pack(fill=tk.BOTH, expand=True)
-
-        # Tạo Treeview
-        self.tree = ttk.Treeview(frame, columns=list(self.data.columns), show="headings")
-        for col in self.data.columns:
-            self.tree.heading(col, text=col)
-            self.tree.column(col, width=100)
-
-        # Thêm dữ liệu vào Treeview
-        for _, row in self.data.iterrows():
-            self.tree.insert("", tk.END, values=list(row))
-        self.tree.pack(fill=tk.BOTH, expand=True)
-
-        if additional_button:
-            additional_button(data_window, self.tree)
-
-        # Nút đóng cửa sổ
-        ttk.Button(data_window, text="Close", command=data_window.destroy).pack(pady=10)
-    '''
-
+    
     def show_data_window(self, additional_button=None, rows_per_page=10):
         """Hiển thị dữ liệu trong một cửa sổ mới với phân trang"""
         if self.data.empty:
@@ -104,18 +68,39 @@ class CSVApp:
         # Tạo cửa sổ mới
         data_window = tk.Toplevel(self.root)
         data_window.title("Data View")
-        data_window.geometry("500x400")
-        self.center_toplevel(data_window, 500, 400)
+        data_window.geometry("1400x300")
+        self.center_toplevel(data_window, 1400, 300)
         
         # Frame chứa Treeview
         frame = ttk.Frame(data_window)
         frame.pack(fill=tk.BOTH, expand=True)
-        # Tạo Treeview
-        self.tree = ttk.Treeview(frame, columns=list(self.data.columns), show="headings")
+        #Tạo thanh cuộn
+        
+        x_scroll = ttk.Scrollbar(frame, orient=tk.HORIZONTAL)
+        y_scroll = ttk.Scrollbar(frame, orient=tk.VERTICAL)
+        self.tree = ttk.Treeview(
+            frame, 
+            columns=list(self.data.columns), 
+            show="headings", 
+            xscrollcommand=x_scroll.set, 
+            yscrollcommand=y_scroll.set
+        )
+
+        # Thiết lập thanh cuộn hoạt động
+        x_scroll.config(command=self.tree.xview)
+        y_scroll.config(command=self.tree.yview)
+
+        # Đặt thanh cuộn
+        x_scroll.pack(side=tk.BOTTOM, fill=tk.X)
+        y_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Đặt Treeview
+        self.tree.pack(fill=tk.BOTH, expand=True)
+        
+        # # Tạo Treeview
         for col in self.data.columns:
             self.tree.heading(col, text=col)
             self.tree.column(col, width=150, anchor=tk.CENTER)
-        self.tree.pack(fill=tk.BOTH, expand=True)
         # Gọi hàm Read 
         current_page = 1
         page_data, total_pages = Read(self.data, page=current_page, page_size=rows_per_page)
