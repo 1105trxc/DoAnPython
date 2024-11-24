@@ -12,19 +12,19 @@ except FileNotFoundError:
     ])
 
 # Hàm thêm dữ liệu mới
-def Create(data):
+def Create(data, data_input):
     try:
-        temperature = float(input("Nhập vào Temperature (°C): "))
-        humidity = float(input("Nhập vào Humidity (%): "))
-        wind_speed = float(input("Nhập vào Wind Speed (mph): "))
-        precipitation = float(input("Nhập vào Precipitation (%): "))
-        cloud_cover = input("Nhập vào Cloud Cover (e.g., Partly cloudy, Clear, Overcast): ")
-        pressure = float(input("Nhập vào Atmospheric Pressure (hPa): "))
-        uv_index = int(input("Nhập vào UV Index: "))
-        season = input("Nhập vào Season (Winter, Spring, Summer, Autumn): ")
-        visibility = float(input("Nhập vào Visibility (km): "))
-        location = input("Nhập vào Location (Inland, Mountain, Coastal): ")
-        weather_type = input("Nhập vào Weather Type (Rainy, Sunny, Cloudy, Snowy): ")
+        temperature = float(data_input["Temperature (°C)"])
+        humidity = float(data_input["Humidity (%)"])
+        wind_speed = float(data_input["Wind Speed (mph)"])
+        precipitation = float(data_input["Precipitation (%)"])
+        cloud_cover = data_input["Cloud Cover"]
+        pressure = float(data_input["Atmospheric Pressure (hPa)"])
+        uv_index = int(data_input["UV Index"])
+        season = data_input["Season"]
+        visibility = float(data_input["Visibility (km)"])
+        location = data_input["Location"]
+        weather_type = data_input["Weather Type"]
 
         # Tạo hàng mới dưới dạng DataFrame để đảm bảo cấu trúc khớp với DataFrame gốc
         new_row = pd.DataFrame([{
@@ -41,14 +41,13 @@ def Create(data):
             'Weather Type': weather_type
         }], columns=data.columns)
 
-        # Thêm hàng mới vào đầu DataFrame
-        data = pd.concat([new_row, data], ignore_index=True)
         print("Thêm dữ liệu thành công!")
         return data
 
     except ValueError:
         print("Dữ liệu nhập vào không hợp lệ, vui lòng nhập lại.")
         return data
+
 
 # Hàm xóa dữ liệu
 def Delete(data):

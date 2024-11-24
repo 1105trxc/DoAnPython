@@ -7,10 +7,12 @@ from HamTienIch.locDuLieu import *
 from VeBieuDo.bieuDoTheoMua import *
 from VeBieuDo.heatMap import *
 from CRUD.CRUD import *
+
+# Load data from CSV file
 try:
     data = pd.read_csv(r"dataDaLamSach.csv")
 except FileNotFoundError:
-    messagebox.showerror("Error", f"File not found!")
+    messagebox.showerror("Error", "File not found!")
     data = pd.DataFrame()
 
 class CSVApp:
@@ -20,11 +22,13 @@ class CSVApp:
         
         # Initialize data
         self.data = data.copy()
-         # Center the main window
+        
+        # Center the main window
         self.center_window(400, 300)
+        
         # UI Components
         self.create_widgets()
-        
+
     def center_window(self, width, height):
         """Đặt cửa sổ chính giữa màn hình."""
         screen_width = self.root.winfo_screenwidth()
@@ -36,6 +40,7 @@ class CSVApp:
 
         # Set the geometry of the window
         self.root.geometry(f"{width}x{height}+{x}+{y}")
+
     def create_widgets(self):
         # Frame for table
         self.table_frame = ttk.Frame(self.root)
@@ -44,7 +49,7 @@ class CSVApp:
         # Control buttons
         self.control_frame = ttk.Frame(self.root)
         self.control_frame.pack(fill=tk.X)
-        
+
         ttk.Button(self.control_frame, text="Show Data", command=self.show_data_window).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Add Row", command=self.add_row).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Delete Row", command=self.delete_row).pack(fill=tk.X, padx=5, pady=5)
@@ -65,22 +70,23 @@ class CSVApp:
         data_window = tk.Toplevel(self.root)
         data_window.title("Data View")
         data_window.geometry("400x300")
-
+        
         self.center_toplevel(data_window, 400, 300)
+        
         # Frame chứa Treeview
         frame = ttk.Frame(data_window)
         frame.pack(fill=tk.BOTH, expand=True)
 
         # Tạo Treeview
-        tree = ttk.Treeview(frame, columns=list(self.data.columns), show="headings")
+        self.tree = ttk.Treeview(frame, columns=list(self.data.columns), show="headings")
         for col in self.data.columns:
-            tree.heading(col, text=col)
-            tree.column(col, width=100)
+            self.tree.heading(col, text=col)
+            self.tree.column(col, width=100)
 
         # Thêm dữ liệu vào Treeview
         for _, row in self.data.iterrows():
-            tree.insert("", tk.END, values=list(row))
-        tree.pack(fill=tk.BOTH, expand=True)
+            self.tree.insert("", tk.END, values=list(row))
+        self.tree.pack(fill=tk.BOTH, expand=True)
 
         # Nút đóng cửa sổ
         ttk.Button(data_window, text="Close", command=data_window.destroy).pack(pady=10)
@@ -95,21 +101,13 @@ class CSVApp:
 
         window.geometry(f"{width}x{height}+{x}+{y}")
 
-    def load_data_to_tree(self):
-        """Load data into the treeview."""
-        for row in self.tree.get_children():
-            self.tree.delete(row)
-        
-        for _, row in self.data.iterrows():
-            self.tree.insert("", tk.END, values=list(row))
-    
     def add_row(self):
         """Add a new row to the data by calling Create from CRUD."""
         # Tạo cửa sổ nhập liệu
         input_window = tk.Toplevel(self.root)
         input_window.title("Nhập thông tin thời tiết")
         input_window.geometry("400x400")
-
+        self.center_toplevel(input_window, 400, 400)
         # Tạo các trường nhập liệu
         labels = [
             "Temperature (°C)", "Humidity (%)", "Wind Speed (mph)", "Precipitation (%)", 
@@ -118,6 +116,8 @@ class CSVApp:
         ]
         
         entries = {}
+        frame = ttk.Frame(input_window)
+        frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
         for label in labels:
             row = ttk.Frame(input_window)
             row.pack(fill=tk.X, pady=5)
@@ -132,25 +132,10 @@ class CSVApp:
         # Hàm để xử lý khi nhấn nút "Thêm"
         def on_add():
             try:
-                # Thu thập dữ liệu từ các trường nhập liệu
-                new_data = {label: entries[label].get() for label in labels}
-
-                # Chuyển các giá trị cần thiết sang kiểu dữ liệu phù hợp
-                new_data['Temperature (°C)'] = float(new_data['Temperature (°C)'])
-                new_data['Humidity (%)'] = float(new_data['Humidity (%)'])
-                new_data['Wind Speed (mph)'] = float(new_data['Wind Speed (mph)'])
-                new_data['Precipitation (%)'] = float(new_data['Precipitation (%)'])
-                new_data['Atmospheric Pressure (hPa)'] = float(new_data['Atmospheric Pressure (hPa)'])
-                new_data['UV Index'] = int(new_data['UV Index'])
-                new_data['Visibility (km)'] = float(new_data['Visibility (km)'])
-
-                # Chuyển đổi dữ liệu thành DataFrame mới
-                new_row = pd.DataFrame([new_data], columns=self.data.columns)
-
+                data_input = {label: entries[label].get() for label in labels}
                 # Thêm hàng mới vào DataFrame thông qua hàm Create
-                self.data = Create(self.data)
-                self.load_data_to_tree()
-                self.save_csv()
+                self.data = Create(self.data, data_input)
+                #self.save_csv()
                 messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")
                 input_window.destroy()  # Đóng cửa sổ nhập liệu
 
@@ -180,6 +165,7 @@ class CSVApp:
         menu.title("Chọn biểu đồ để hiển thị")
         menu.geometry("400x300")
         self.center_toplevel(menu, 400, 300)
+        
         # Tạo Notebook để chia tab
         notebook = ttk.Notebook(menu)
         notebook.pack(fill=tk.BOTH, expand=True)
@@ -224,18 +210,20 @@ class CSVApp:
         for label, func in options_theo_mua:
             btn = ttk.Button(tab_theo_mua, text=label, command=lambda f=func: show_plot(f))
             btn.pack(fill=tk.X, padx=10, pady=5)
-        # Thêm các nút vào tab 
+
+        # Thêm các nút vào tab heatmap
         for label, func in options_heatmap:
             btn = ttk.Button(tab_heat, text=label, command=lambda f=func: show_plot(f))
             btn.pack(fill=tk.X, padx=10, pady=5)
+
         # Nút đóng ở cuối cửa sổ
         ttk.Button(menu, text="Đóng", command=menu.destroy).pack(pady=10)
-
+             
     def save_csv(self):
         """Save data to the same CSV file."""
         try:
-            self.data.to_csv(self.file_path, index=False)  # Lưu vào file CSV cũ
-            messagebox.showinfo("Thông báo", f"Dữ liệu đã được lưu vào {self.file_path}")
+            self.data.to_csv(r"dataDaLamSach.csv", index=False)  # Lưu vào file CSV cũ
+            messagebox.showinfo("Thông báo", "Dữ liệu đã được lưu vào dataDaLamSach.csv")
         except Exception as e:
             messagebox.showerror("Lỗi", f"Không thể lưu dữ liệu: {str(e)}")
 
