@@ -25,7 +25,7 @@ def sapXepTang():
     print("6. UV Index")
     print("7. Visibility (km)")
 
-    n = int(input("Nhập loại muốn sắp xếp giảm dần: "))
+    n = int(input("Nhập loại muốn sắp xếp tăng dần: "))
     
     while n < 1 or n > 7:
         n = int(input("Không hợp lệ. Hãy nhập lại: "))

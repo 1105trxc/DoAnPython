@@ -16,8 +16,8 @@ def main():
         print("4. Cập nhật dữ liệu")
         print("5. Lưu dữ liệu")
         print("6. Lọc dữ liệu")
-        print("7. Sắp xếp dữ liệu tăng dần")
-        print("8. Sắp xếp dữ liệu giảm dần")
+        print("7. Sắp xếp dữ liệu giảm dần")
+        print("8. Sắp xếp dữ liệu tăng dần")
         print("9. Vẽ biểu đồ")
         print("10. Thoát chương trình")
 
