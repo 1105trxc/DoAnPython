@@ -139,17 +139,17 @@ class CSVApp:
 
         # Nút chuyển trang tiếp theo
         prev_button = ttk.Button(nav_frame, text="Previous Page", command=prev_page)
-        prev_button.pack(side=tk.LEFT, padx=10, pady=10)
+        prev_button.pack(side=tk.LEFT, padx=2, pady=2)
        
         # Nút quay lại trang trước
         next_button = ttk.Button(nav_frame, text="Next Page", command=next_page)
-        next_button.pack(side=tk.LEFT, padx=10, pady=10)
+        next_button.pack(side=tk.LEFT, padx=2, pady=2)
         
         if additional_button:
-            additional_button(data_window, self.tree)
+            additional_button(data_window, self.tree, nav_frame)
 
         # Nút đóng cửa sổ
-        ttk.Button(data_window, text="Close", command=data_window.destroy).pack(pady=10)    
+        ttk.Button(data_window, text="Close", command=data_window.destroy).pack(pady=2)    
     def center_toplevel(self, window, width, height):
         """Đặt cửa sổ con ở giữa màn hình."""
         screen_width = window.winfo_screenwidth()
@@ -166,8 +166,11 @@ class CSVApp:
         # Tạo cửa sổ nhập liệu
         input_window = tk.Toplevel(self.root)
         input_window.title("Nhập thông tin thời tiết")
-        input_window.geometry("400x400")
-        self.center_toplevel(input_window, 400, 400)
+        input_window.geometry("300x430")
+        self.center_toplevel(input_window, 300, 500)
+        # Tạo frame chính để chứa các thành phần giao diện
+        main_frame = ttk.Frame(input_window)
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
         # Tạo các trường nhập liệu
         labels = [
             "Temperature (°C)", "Humidity (%)", "Wind Speed (mph)", "Precipitation (%)", 
@@ -176,33 +179,62 @@ class CSVApp:
         ]
         
         entries = {}
-        frame = ttk.Frame(input_window)
-        frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
-        for label in labels:
-            row = ttk.Frame(input_window)
-            row.pack(fill=tk.X, pady=5)
-
-            lbl = ttk.Label(row, text=label)
-            lbl.pack(side=tk.LEFT, padx=5)
-
-            entry = ttk.Entry(row)
-            entry.pack(side=tk.LEFT, fill=tk.X, padx=5)
+    
+        # Tạo nhãn và trường nhập liệu theo bố cục lưới
+        for i, label in enumerate(labels):
+            ttk.Label(main_frame, text=label).grid(row=i, column=0, sticky="w", pady=5)
+            entry = ttk.Entry(main_frame, width=30)
+            entry.grid(row=i, column=1, pady=5, padx=10)
             entries[label] = entry
-
+        
         # Hàm để xử lý khi nhấn nút "Thêm"
+        
+        # def on_add():
+        #     try:
+        #         data_input = {label: entries[label].get() for label in labels}
+        #         # Thêm hàng mới vào DataFrame thông qua hàm Create
+        #         self.data = Create(self.data, data_input)
+
+        #         if isinstance(self.data, pd.DataFrame):
+        #             self.original_data = self.data.copy()
+        #         else:
+        #             messagebox.showerror("Lỗi", "Dữ liệu không hợp lệ!")
+        #             return
+                
+        #         #self.original_data = self.data.copy()
+        #         messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")
+        #         self.save_csv()
+        #         input_window.destroy()  # Đóng cửa sổ nhập liệu
+
+        #     except ValueError:
+        #         messagebox.showerror("Lỗi", "Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại!")
+
+        # # Nút thêm dữ liệu
+        # ttk.Button(main_frame, text="Thêm", command=on_add).grid(row=len(labels), column=0, columnspan=2, pady=20)
+        error_label = ttk.Label(main_frame, text="", foreground="red")
+        error_label.grid(row=len(labels), column=0, columnspan=2, pady=5)
         def on_add():
-            try:
+                # Lấy dữ liệu từ các trường nhập liệu
                 data_input = {label: entries[label].get() for label in labels}
+
                 # Thêm hàng mới vào DataFrame thông qua hàm Create
-                self.data = Create(self.data, data_input)
-                messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")
-                input_window.destroy()  # Đóng cửa sổ nhập liệu
+                updated_data = Create(self.data, data_input , error_label)  # Sử dụng hàm Create của bạn
 
-            except ValueError:
-                messagebox.showerror("Lỗi", "Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại!")
-
-        # Nút thêm dữ liệu
-        ttk.Button(input_window, text="Thêm", command=on_add).pack(pady=10)
+                #if isinstance(updated_data, pd.DataFrame):  # Kiểm tra dữ liệu trả về
+                if updated_data is not None:
+                    self.data = updated_data  # Cập nhật dữ liệu mới
+                    self.original_data = self.data.copy()  # Cập nhật bản sao dữ liệu gốc nếu cần
+                    messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")  # Hiển thị thông báo thành công
+                    self.save_csv()  # Lưu lại CSV nếu cần
+                    input_window.destroy()  # Đóng cửa sổ nhập liệu
+                else:
+                    # Nếu dữ liệu không hợp lệ, hiển thị thông báo lỗi
+                    #messagebox.showerror("Lỗi", "Dữ liệu không hợp lệ!")                   
+                    messagebox.showerror("Lỗi", f"Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại!")
+                    return
+        #Nút thêm dữ liệu
+        ttk.Button(main_frame, text="Thêm", command=on_add).grid(row=len(labels), column=0, columnspan=2, pady=20)
+   
     def delete_row(self):
         """Hiển thị cửa sổ để người dùng chọn dòng cần xóa."""
         if self.data.empty:
@@ -226,11 +258,11 @@ class CSVApp:
             else:
                 messagebox.showwarning("Cảnh báo", "Vui lòng chọn một dòng để xóa.")
 
-        def add_delete_button(data_window, tree):
-            ttk.Button(data_window, text="Xóa", command=lambda: on_delete(data_window, tree)).pack(pady=10)
-        
+        def add_delete_button(data_window, tree, nav_frame):
+            ttk.Button(nav_frame, text="Xóa", command=lambda: on_delete(data_window, tree)).pack(side=tk.LEFT,padx=2,pady=2)
+            
         # Hiển thị cửa sổ dữ liệu và thêm nút xóa
-        self.show_data_window(additional_button=add_delete_button)
+        self.show_data_window(additional_button=lambda data_window, tree, nav_frame: add_delete_button(data_window, tree, nav_frame))
 
     def visualize_data(self):
         """Hiển thị menu để vẽ biểu đồ."""
