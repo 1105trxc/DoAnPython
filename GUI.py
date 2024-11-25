@@ -7,8 +7,7 @@ from VeBieuDo.bieuDoTheoMua import *
 from VeBieuDo.heatMap import *
 from CRUD.CRUD import *
 from HamTienIch.locDuLieu import *
-from HamTienIch.sapXepGiam import *
-from HamTienIch.sapXepTang import *
+from HamTienIch.sapXep import *
 
 # Load data from CSV file
 try:

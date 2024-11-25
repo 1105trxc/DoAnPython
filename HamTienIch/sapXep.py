@@ -1,6 +1,6 @@
 import pandas as pd
 file_name = r"dataDaLamSach.csv"  # File nguồn
-output_file = r"outPut.csv"  # File kết quả
+#output_file = r"outPut.csv"  # File kết quả
 # def sapXep(file_name, column_name, ascending=True, output_file=None):
 #       # Đọc dữ liệu từ file CSV
 #     df = pd.read_csv(file_name)
