@@ -6,13 +6,13 @@ import pandas as pd
 data = pd.read_csv(r"dataDaLamSach.csv")
 
 # Hàm để thêm nhãn giá trị trên cột
-def addValueLabels(ax):
+def addValueLabelsBar(ax):
     for p in ax.patches:
         ax.annotate(format(p.get_height(), '.1f'), 
                     (p.get_x() + p.get_width() / 2., p.get_height()), 
                     ha='center', va='center', 
                     xytext=(0, 8), textcoords='offset points')
-def addValueLabels(ax):
+def addValueLabelsLine(ax):
     for line in ax.lines:  # Xử lý từng đường trong biểu đồ
         for x, y in zip(line.get_xdata(), line.get_ydata()):
             ax.annotate(f'{y:.2f}',  # In giá trị với 2 chữ số thập phân
@@ -31,7 +31,7 @@ def drawNhietDoTheoKhuVuc():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Nhiệt độ trung bình (°C)', fontsize=12)
     plt.grid(axis='y')
-    addValueLabels(ax)
+    addValueLabelsBar(ax)
     plt.show()
 
 def drawSucGioTheoKhuVuc():
@@ -41,7 +41,7 @@ def drawSucGioTheoKhuVuc():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Tốc độ Gió trung bình (mph)', fontsize=12)
     plt.grid(axis='y')
-    addValueLabels(ax)
+    addValueLabelsBar(ax)
     plt.show()
 
 def drawKhaNangMuaTheoKhuVuc():
@@ -51,7 +51,7 @@ def drawKhaNangMuaTheoKhuVuc():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Khả năng có mưa (%)', fontsize=12)
     plt.grid(axis='y')
-    addValueLabels(ax)
+    addValueLabelsBar(ax)
     plt.show()
 
 def drawDoAmTheoKhuVuc():
@@ -61,7 +61,7 @@ def drawDoAmTheoKhuVuc():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Độ ẩm trung bình (%)', fontsize=12)
     plt.grid(axis='y')
-    addValueLabels(ax)
+    addValueLabelsBar(ax)
     plt.show()
 
 def drawUVTheoKhuVuc():
@@ -72,7 +72,7 @@ def drawUVTheoKhuVuc():
     plt.xlabel('Khu vực', fontsize=12)
     plt.ylabel('Chỉ số UV trung bình  ', fontsize=12)
     plt.grid(True)
-    addValueLabels(ax)
+    addValueLabelsLine(ax)
     plt.show()
 
 # Menu để chọn biểu đồ

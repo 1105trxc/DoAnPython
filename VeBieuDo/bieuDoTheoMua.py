@@ -6,7 +6,7 @@ import pandas as pd
 data = pd.read_csv(r"dataDaLamSach.csv")
 
 # Hàm để thêm nhãn giá trị trên cột
-def addValueLabels(ax):
+def addValueLabelsBar(ax):
     for p in ax.patches:
         ax.annotate(format(p.get_height(), '.1f'), 
                     (p.get_x() + p.get_width() / 2., p.get_height()), 
@@ -32,7 +32,7 @@ def drawNhietDoTheoMua():
     plt.xlabel('Mùa', fontsize=12)
     plt.ylabel('Nhiệt độ trung bình (°C)', fontsize=12)
     plt.grid(axis='y')
-    addValueLabels(ax)
+    addValueLabelsBar(ax)
     plt.show()
 
 def drawSucGioTheoMua():
@@ -42,7 +42,7 @@ def drawSucGioTheoMua():
     plt.xlabel('Mùa', fontsize=12)
     plt.ylabel('Tốc độ Gió trung bình (km/h)', fontsize=12)
     plt.grid(axis='y')
-    addValueLabels(ax)
+    addValueLabelsBar(ax)
     plt.show()
 
 def drawKhaNangMuaTheoMua():
@@ -52,7 +52,7 @@ def drawKhaNangMuaTheoMua():
     plt.xlabel('Mùa', fontsize=12)
     plt.ylabel('Khả năng có mưa (%)', fontsize=12)
     plt.grid(axis='y')
-    addValueLabels(ax)
+    addValueLabelsBar(ax)
     plt.show()
 
 def drawDoAmTheoMua():
@@ -62,7 +62,7 @@ def drawDoAmTheoMua():
     plt.xlabel('Mùa', fontsize=12)
     plt.ylabel('Độ ẩm (%)', fontsize=12)
     plt.grid(axis='y')
-    addValueLabels(ax)
+    addValueLabelsBar(ax)
     plt.show()
 
 def drawUVTheoMua():
