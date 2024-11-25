@@ -186,33 +186,8 @@ class CSVApp:
             entry = ttk.Entry(main_frame, width=30)
             entry.grid(row=i, column=1, pady=5, padx=10)
             entries[label] = entry
-        
-        # Hàm để xử lý khi nhấn nút "Thêm"
-        
-        # def on_add():
-        #     try:
-        #         data_input = {label: entries[label].get() for label in labels}
-        #         # Thêm hàng mới vào DataFrame thông qua hàm Create
-        #         self.data = Create(self.data, data_input)
-
-        #         if isinstance(self.data, pd.DataFrame):
-        #             self.original_data = self.data.copy()
-        #         else:
-        #             messagebox.showerror("Lỗi", "Dữ liệu không hợp lệ!")
-        #             return
-                
-        #         #self.original_data = self.data.copy()
-        #         messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")
-        #         self.save_csv()
-        #         input_window.destroy()  # Đóng cửa sổ nhập liệu
-
-        #     except ValueError:
-        #         messagebox.showerror("Lỗi", "Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại!")
-
-        # # Nút thêm dữ liệu
-        # ttk.Button(main_frame, text="Thêm", command=on_add).grid(row=len(labels), column=0, columnspan=2, pady=20)
         error_label = ttk.Label(main_frame, text="", foreground="red")
-        error_label.grid(row=len(labels), column=0, columnspan=2, pady=5)
+        error_label.grid(row=len(labels)+1, column=0, columnspan=2, pady=5, sticky="w")
         def on_add():
                 # Lấy dữ liệu từ các trường nhập liệu
                 data_input = {label: entries[label].get() for label in labels}
