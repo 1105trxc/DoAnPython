@@ -315,16 +315,19 @@ class CSVApp:
         notebook = ttk.Notebook(sort_window)
         notebook.pack(padx=10, pady=10, fill="both", expand=True)
 
+        # Lấy danh sách tên cột từ dữ liệu gốc
+        columns = list(self.original_data.columns)
+
         # Tạo Tab 1 - Lọc theo kiểu số
         tab_numeric = ttk.Frame(notebook)
         notebook.add(tab_numeric, text="Lọc kiểu số")
         
-        # Nhập tên cột
-        column_label = tk.Label(tab_numeric, text="Nhập tên cột:")
+        # Nhập cột
+        column_label = tk.Label(tab_numeric, text="Chọn cột:")
         column_label.pack(pady=5)
-        column_entry = tk.Entry(tab_numeric)
-        column_entry.pack(pady=5)
-
+        column_combo = ttk.Combobox(tab_numeric, values=columns)
+        column_combo.pack(pady=5)
+        
         # Nhập giá trị tối thiểu và tối đa
         min_label = tk.Label(tab_numeric, text="Nhập giá trị tối thiểu:")
         min_label.pack(pady=5)
@@ -338,7 +341,7 @@ class CSVApp:
 
         # Nút lọc theo kiểu số
         def apply_numeric_filter():
-            column = column_entry.get()
+            column = column_combo.get()  # Lấy tên cột từ ComboBox
             try:
                 min_val = float(min_entry.get())
                 max_val = float(max_entry.get())
@@ -354,7 +357,6 @@ class CSVApp:
             if filtered_data is not None:
                 self.data = filtered_data  # Cập nhật self.data tạm thời
                 self.show_data_window()
-                messagebox.showinfo("Lọc thành công", "Dữ liệu đã được lọc và hiển thị.")
             else:
                 messagebox.showwarning("Không có dữ liệu", "Không tìm thấy dữ liệu thỏa mãn.")
 
@@ -365,11 +367,11 @@ class CSVApp:
         tab_string = ttk.Frame(notebook)
         notebook.add(tab_string, text="Lọc kiểu chuỗi")
 
-        # Nhập tên cột và điều kiện lọc cho chuỗi
-        column_label_string = tk.Label(tab_string, text="Nhập tên cột:")
+        # Nhập cột
+        column_label_string = tk.Label(tab_string, text="Chọn cột:")
         column_label_string.pack(pady=5)
-        column_entry_string = tk.Entry(tab_string)
-        column_entry_string.pack(pady=5)
+        column_combo_string = ttk.Combobox(tab_string, values=columns)
+        column_combo_string.pack(pady=5)
 
         condition_label = tk.Label(tab_string, text="Nhập điều kiện lọc:")
         condition_label.pack(pady=5)
@@ -378,7 +380,7 @@ class CSVApp:
 
         # Nút lọc theo kiểu chuỗi
         def apply_string_filter():
-            column = column_entry_string.get()
+            column = column_combo_string.get()  # Lấy tên cột từ ComboBox
             condition = condition_entry.get()
             filtered_data = locKieuString(self.original_data, column, condition)
             if filtered_data is not None:
@@ -391,7 +393,7 @@ class CSVApp:
         string_button = tk.Button(tab_string, text="Lọc theo kiểu chuỗi", command=apply_string_filter)
         string_button.pack(pady=10)
 
-        # Nút khôi phục dữ liệu gốc
+        # Khôi phục dữ liệu gốc
         def reset_data():
             self.data = self.original_data.copy()  # Khôi phục dữ liệu về trạng thái gốc
             self.show_data_window()
@@ -399,6 +401,7 @@ class CSVApp:
 
         reset_button = tk.Button(sort_window, text="Khôi phục dữ liệu gốc", command=reset_data)
         reset_button.pack(pady=10)
+
 
     def update_data(self):  
         """Hiển thị cửa sổ để người dùng chọn dòng cần cập nhật."""  
