@@ -271,10 +271,11 @@ class CSVApp:
             ("Nhiệt độ trung bình theo mùa", drawNhietDoTheoMua),
             ("Tốc độ gió trung bình theo mùa", drawSucGioTheoMua),
             ("Khả năng có mưa theo mùa", drawKhaNangMuaTheoMua),
+            ("Độ ẩm trung bình theo mùa", drawDoAmTheoMua),
             ("Biến động chỉ số UV theo mùa", drawUVTheoMua)
         ]
         options_heatmap = [
-            ("Heatmap", DrawHeatMap)
+            ("Heatmap", drawHeatMap)
         ]
 
         # Thêm các nút vào tab "Vẽ theo khu vực"

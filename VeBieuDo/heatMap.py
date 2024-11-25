@@ -4,7 +4,7 @@ import pandas as pd
 
 data = pd.read_csv(r"dataDaLamSach.csv")
 
-def DrawHeatMap():
+def drawHeatMap():
     # Lọc các cột số trong dữ liệu
     numerical_columns = data.select_dtypes(include=['float64', 'int64'])
 
