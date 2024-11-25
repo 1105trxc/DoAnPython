@@ -1,4 +1,5 @@
 import pandas as pd
+from tkinter import messagebox
 file_path = r"dataDaLamSach.csv"
 # Tải dữ liệu từ file CSV nếu có, nếu không sẽ tạo DataFrame trống với các cột phù hợp
 try:
@@ -115,28 +116,6 @@ def Delete(data, selected_row):
         print(f"Lỗi xảy ra khi xóa: {str(e)}")
         return data
 
-
-'''
-# Hàm đọc dữ liệu
-def Read(data, rows_per_page=10):
-    """Phân trang và trả về một hàm để lấy dữ liệu cho từng trang."""
-    if data.empty:
-        return None, 0  # Trả về None và 0 trang nếu không có dữ liệu
-    
-    # Tổng số dòng và số trang
-    total_rows = len(data)
-    total_pages = (total_rows + rows_per_page - 1) // rows_per_page  # Tính số trang cần thiết
-
-    # Hàm hiển thị dữ liệu trên một trang
-    def display_page(page):
-        start_idx = (page - 1) * rows_per_page  # Chỉ số bắt đầu
-        end_idx = min(start_idx + rows_per_page, total_rows)  # Chỉ số kết thúc
-        page_data = data.iloc[start_idx:end_idx]  # Lấy dữ liệu của trang hiện tại
-        return page_data
-
-    return display_page, total_pages
-'''
-
 def Read(data, page=1, page_size=10):
     
     try:
@@ -155,74 +134,69 @@ def Read(data, page=1, page_size=10):
     except Exception as e:
         raise ValueError(f"Error reading the file: {e}")
 
-# Hàm cập nhật dữ liệu
-def Update(data):
+
+def Update(data, index, data_input, error_label):
     try:
         if data.empty:
-            print("Không tồn tại dữ liệu.")
-            return data
-
-        # Lấy chỉ số hàng cần cập nhật
-        index = int(input("Nhập hàng bạn muốn cập nhật dữ liệu: ")) - 1
+            raise ValueError("Không có dữ liệu để cập nhật.")
+        
+        # Kiểm tra xem chỉ số có hợp lệ không
         if index < 0 or index >= len(data):
-            print("Giá trị không hợp lệ.")
-            return data
-
-        # Nhập giá trị mới
-        print("Hãy nhập vào giá trị bạn muốn thay đổi:")
+            raise ValueError("Chỉ số hàng không hợp lệ.")
+        
+        # Lặp qua các cột và cập nhật giá trị
         for col in data.columns:
-            new_value = input(f"{col} (giá trị hiện tại: {data.at[index, col]}): ") #hiển thị giá trị tại hàng và cột 
-            if col == "Cloud Cover":
-                    # Các giá trị hợp lệ cho Cloud Cover
+            new_value = data_input.get(col)  # Lấy giá trị từ GUI (ví dụ: Entry hoặc combobox)
+
+            if new_value:
+                # Kiểm tra các giá trị hợp lệ cho các cột đặc biệt
+                if col == "Cloud Cover":
                     valid_cloudy = ["Partly cloudy", "Clear", "Overcast"]
-                    while new_value not in valid_cloudy:
-                        print(f"Giá trị không hợp lệ ở {col}. Chúng phải nằm trong {valid_cloudy}. Hãy thử lại.")
-                        new_value = input(f"{col} (giá trị hiện tại: {data.at[index, col]}): ")
-            elif col == "Season":
-                    # Các giá trị hợp lệ cho Season
+                    if new_value not in valid_cloudy:
+                        raise ValueError(f"Giá trị không hợp lệ cho {col}. Phải là trong {valid_cloudy}.")
+
+                elif col == "Season":
                     valid_seasons = ["Winter", "Spring", "Autumn", "Summer"]
-                    while new_value not in valid_seasons:
-                        print(f"Giá trị không hợp lệ ở {col}. Chúng phải nằm trong  {valid_seasons}. Hãy thử lại.")
-                        new_value = input(f"{col} (giá trị hiện tại: {data.at[index, col]}): ")
-            elif col == "Location":
-                    # Các giá trị hợp lệ cho Locatiom
+                    if new_value not in valid_seasons:
+                        raise ValueError(f"Giá trị không hợp lệ cho {col}. Phải là trong {valid_seasons}.")
+
+                elif col == "Location":
                     valid_location = ["Inland", "Mountain", "Coastal"]
-                    while new_value not in valid_location:
-                        print(f"Giá trị không hợp lệ ở {col}. Chúng phải nằm trong {valid_location}.  Hãy thử lại.")
-                        new_value = input(f"{col} (giá trị hiện tại: {data.at[index, col]}): ")
-            elif col == "Weather Type":
-                    # Các giá trị hợp lệ cho Weather
+                    if new_value not in valid_location:
+                        raise ValueError(f"Giá trị không hợp lệ cho {col}. Phải là trong {valid_location}.")
+
+                elif col == "Weather Type":
                     valid_weather = ["Rainy", "Cloudy", "Sunny", "Snowy"]
-                    while new_value not in valid_weather:
-                        print(f"Giá trị không hợp lệ ở {col}. Chúng phải nằm trong {valid_weather}. Hãy thử lại.")
-                        new_value = input(f"{col} (giá trị hiện tại: {data.at[index, col]}): ")
-            elif new_value.strip():
-                # Kiểm tra kiểu dữ liệu của cột và chuyển đổi nếu cần
-                if pd.api.types.is_numeric_dtype(data[col]):  # Kiểm tra xem có phải là số hay không
-                    while True:  # Lặp lại cho đến khi nhập giá trị hợp lệ
-                        try:
-                            # Chuyển đổi giá trị nhập vào thành số, phù hợp với kiểu dữ liệu của cột
-                            if '.' in new_value:
-                                new_value = float(new_value)
-                            else:
-                                new_value = int(new_value)
-                            if col == 'Temperature (°C)': pass
-                            else:
-                                while new_value < 0:
-                                    new_value = float(input(f"Giá trị không hợp lệ tại {col}. Phải là một số lớn hơn hoặc bằng 0. Hãy thử lại:"))
-                            break  # Thoát khỏi vòng lặp nếu chuyển đổi thành công
-                        except ValueError:
-                            print(f"Giá trị của {col} Không hợp lệ. Hãy điền vào một số.")
-                            new_value = input(f"Nhập vào giá trị mới cho {col} (giá trị hiện tại: {data.at[index, col]}): ")
-                data.at[index, col] = new_value  # Cập nhật giá trị sau khi chuyển đổi thành công
-        print(f"Hàng {index} đã được cập nhật thành công!")
+                    if new_value not in valid_weather:
+                        raise ValueError(f"Giá trị không hợp lệ cho {col}. Phải là trong {valid_weather}.")
+
+                elif pd.api.types.is_numeric_dtype(data[col]):
+                    try:
+                        if '.' in new_value:
+                            new_value = float(new_value)
+                        else:
+                            new_value = int(new_value)
+                        
+                        # Kiểm tra giá trị âm
+                        if new_value < 0:
+                            raise ValueError(f"Giá trị không hợp lệ tại {col}. Phải là một số lớn hơn hoặc bằng 0.")
+                    except ValueError:
+                        raise ValueError(f"Giá trị của {col} không hợp lệ. Hãy nhập lại một số.")
+
+                # Cập nhật giá trị mới vào DataFrame
+                data.at[index, col] = new_value
+        
+        # Hiển thị thông báo thành công
+        messagebox.showinfo("Cập nhật thành công", f"Hàng {index+1} đã được cập nhật thành công!")
+        error_label.config(text="")  # Xóa thông báo lỗi trước đó
         return data
 
-    except ValueError:
-        print("Không hợp lệ, vui lòng nhập lại giá trị hợp lệ.")
+    except ValueError as e:
+        # Hiển thị lỗi lên màn hình
+        error_label.config(text=f"Dữ liệu nhập vào không hợp lệ: {e}", foreground="red")
         return data
 
-# Lưu dữ liệu vào file CSV
+# # Lưu dữ liệu vào file CSV
 def saveData(data):
     data.to_csv(file_path, index=False)
     print(f"Dữ liệu đã được lưu vào {file_path}")

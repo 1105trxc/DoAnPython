@@ -57,7 +57,7 @@ class CSVApp:
         ttk.Button(self.control_frame, text="Visualize", command=self.visualize_data).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Sort", command=self.filter_data).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Filter", command=self.filter_data).pack(fill=tk.X, padx=5, pady=5)
-        ttk.Button(self.control_frame, text="Update", command=self.show_data_window).pack(fill=tk.X, padx=5, pady=5)
+        ttk.Button(self.control_frame, text="Update", command=self.update_data).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Save CSV", command=self.save_csv).pack(fill=tk.X, padx=5, pady=5)
     
     def show_data_window(self, additional_button=None, rows_per_page=10):
@@ -166,8 +166,8 @@ class CSVApp:
         # Tạo cửa sổ nhập liệu
         input_window = tk.Toplevel(self.root)
         input_window.title("Nhập thông tin thời tiết")
-        input_window.geometry("300x430")
-        self.center_toplevel(input_window, 300, 500)
+        input_window.geometry("400x500")
+        self.center_toplevel(input_window, 400, 500)
         # Tạo frame chính để chứa các thành phần giao diện
         main_frame = ttk.Frame(input_window)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
@@ -186,8 +186,9 @@ class CSVApp:
             entry = ttk.Entry(main_frame, width=30)
             entry.grid(row=i, column=1, pady=5, padx=10)
             entries[label] = entry
+
         error_label = ttk.Label(main_frame, text="", foreground="red")
-        error_label.grid(row=len(labels)+1, column=0, columnspan=2, pady=5, sticky="w")
+        error_label.grid(row=len(labels)+1, column=0, columnspan=2, pady=5, sticky="ew")
         def on_add():
                 # Lấy dữ liệu từ các trường nhập liệu
                 data_input = {label: entries[label].get() for label in labels}
@@ -399,6 +400,79 @@ class CSVApp:
         reset_button = tk.Button(sort_window, text="Khôi phục dữ liệu gốc", command=reset_data)
         reset_button.pack(pady=10)
         
+    def update_data(self):  
+        """Hiển thị cửa sổ để người dùng chọn dòng cần cập nhật."""  
+        if self.data.empty:  
+            messagebox.showerror("Lỗi", "Không có dữ liệu để cập nhật.")  
+            return  
+
+        def on_update(data_window, tree):  
+            selected_item = tree.selection()
+            if selected_item:  
+                # Lấy chỉ số dòng từ Treeview  
+                selected_row = tree.index(selected_item[0])
+
+                def save_updated_data():
+                    data_input = {
+                        "Cloud Cover": self.cloud_cover_entry.get(),
+                        "Season": self.season_combobox.get(),
+                        "Location": self.location_combobox.get(),
+                        "Weather Type": self.weather_type_combobox.get()
+                    }
+
+                    # Cập nhật dữ liệu trong DataFrame
+                    for column, value in data_input.items():
+                        self.data.at[selected_row, column] = value
+
+                    # Cập nhật Treeview
+                    tree.item(tree.get_children()[selected_row], values=list(self.data.iloc[selected_row]))
+                    self.update_window.destroy()  # Đóng cửa sổ cập nhật
+
+                # Tạo cửa sổ cập nhật
+                self.update_window = tk.Toplevel(self.root)
+                self.update_window.title("Cập nhật dữ liệu")
+
+                update_frame = ttk.Frame(self.update_window)
+                update_frame.pack(padx=20, pady=20)
+
+                self.error_label = ttk.Label(update_frame, text="", foreground="red")
+                self.error_label.grid(row=5, column=0, columnspan=2, pady=5, sticky="ew")
+
+                # Tạo các trường nhập liệu  
+                ttk.Label(update_frame, text="Cloud Cover:").grid(row=0, column=0, padx=5, pady=5)
+                self.cloud_cover_entry = ttk.Entry(update_frame)
+                self.cloud_cover_entry.grid(row=0, column=1, padx=5, pady=5)
+                self.cloud_cover_entry.insert(0, str(self.data.iloc[selected_row]["Cloud Cover"]))
+
+                ttk.Label(update_frame, text="Season:").grid(row=1, column=0, padx=5, pady=5)
+                self.season_combobox = ttk.Combobox(update_frame, values=["Spring", "Summer", "Fall", "Winter"])
+                self.season_combobox.grid(row=1, column=1, padx=5, pady=5)
+                self.season_combobox.set(self.data.iloc[selected_row]["Season"])
+
+                ttk.Label(update_frame, text="Location:").grid(row=2, column=0, padx=5, pady=5)
+                self.location_combobox = ttk.Combobox(update_frame, values=["Inland", "Mountain", "Coastal"])
+                self.location_combobox.grid(row=2, column=1, padx=5, pady=5)
+                self.location_combobox.set(self.data.iloc[selected_row]["Location"])
+
+                ttk.Label(update_frame, text="Weather Type:").grid(row=3, column=0, padx=5, pady=5)
+                self.weather_type_combobox = ttk.Combobox(update_frame, values=["Rainy", "Cloudy", "Sunny", "Snowy"])
+                self.weather_type_combobox.grid(row=3, column=1, padx=5, pady=5)
+                self.weather_type_combobox.set(self.data.iloc[selected_row]["Weather Type"])
+
+                # Nút lưu và đóng cửa sổ  
+                ttk.Button(update_frame, text="Save", command=save_updated_data).grid(row=6, column=0, padx=5, pady=5)
+                ttk.Button(update_frame, text="Cancel", command=self.update_window.destroy).grid(row=6, column=1, padx=5, pady=5)
+            else:  
+                messagebox.showwarning("Cảnh báo", "Vui lòng chọn một dòng để cập nhật.")
+
+        def add_update_button(data_window, tree, nav_frame):
+            ttk.Button(nav_frame, text="Update", command=lambda: on_update(data_window, tree)).pack(side=tk.LEFT, padx=2, pady=2)
+
+        # Hiển thị cửa sổ dữ liệu và thêm nút "Cập nhật"
+        self.show_data_window(additional_button=add_update_button)
+        
+        
+                
     def save_csv(self):
         """Save data to the same CSV file."""
         try:
@@ -406,6 +480,7 @@ class CSVApp:
             messagebox.showinfo("Thông báo", "Dữ liệu đã được lưu vào dataDaLamSach.csv")
         except Exception as e:
             messagebox.showerror("Lỗi", f"Không thể lưu dữ liệu: {str(e)}")
+
 # Run the applicationcls
 root = tk.Tk()
 app = CSVApp(root)
