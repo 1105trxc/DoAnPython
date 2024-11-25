@@ -55,7 +55,7 @@ class CSVApp:
         ttk.Button(self.control_frame, text="Add Row", command=self.add_row).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Delete Row", command=self.delete_row).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Visualize", command=self.visualize_data).pack(fill=tk.X, padx=5, pady=5)
-        ttk.Button(self.control_frame, text="Sort", command=self.filter_data).pack(fill=tk.X, padx=5, pady=5)
+        ttk.Button(self.control_frame, text="Sort", command=self.sort_data).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Filter", command=self.filter_data).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Update", command=self.update_data).pack(fill=tk.X, padx=5, pady=5)
         ttk.Button(self.control_frame, text="Save CSV", command=self.save_csv).pack(fill=tk.X, padx=5, pady=5)
@@ -399,7 +399,7 @@ class CSVApp:
 
         reset_button = tk.Button(sort_window, text="Khôi phục dữ liệu gốc", command=reset_data)
         reset_button.pack(pady=10)
-        
+
     def update_data(self):  
         """Hiển thị cửa sổ để người dùng chọn dòng cần cập nhật."""  
         if self.data.empty:  
@@ -467,10 +467,65 @@ class CSVApp:
 
         def add_update_button(data_window, tree, nav_frame):
             ttk.Button(nav_frame, text="Update", command=lambda: on_update(data_window, tree)).pack(side=tk.LEFT, padx=2, pady=2)
-
+            
         # Hiển thị cửa sổ dữ liệu và thêm nút "Cập nhật"
         self.show_data_window(additional_button=add_update_button)
+    
+    def sort_data(self):
+        """Hàm tạo cửa sổ sắp xếp và hiển thị kết quả sắp xếp trên GUI"""
+        sort_window = tk.Toplevel(self.root)
+        sort_window.title("Sắp xếp dữ liệu")
+        sort_window.geometry("400x300")
         
+        # Tạo menu chọn cột
+        column_label = tk.Label(sort_window, text="Chọn cột cần sắp xếp:")
+        column_label.pack(pady=10)
+        
+        columns = ['Temperature (°C)', 'Humidity (%)', 'Wind Speed (mph)', 'Precipitation (%)',
+                   'Atmospheric Pressure (hPa)', 'UV Index', 'Visibility (km)']
+        
+        column_combo = ttk.Combobox(sort_window, values=columns)
+        column_combo.set(columns[0])  # Mặc định chọn cột đầu tiên
+        column_combo.pack(pady=5)
+
+        # Lựa chọn kiểu sắp xếp (tăng dần hoặc giảm dần)
+        sort_order_label = tk.Label(sort_window, text="Chọn kiểu sắp xếp:")
+        sort_order_label.pack(pady=5)
+        sort_order = ttk.Combobox(sort_window, values=["Tăng dần", "Giảm dần"])
+        sort_order.set("Tăng dần")  # Mặc định là tăng dần
+        sort_order.pack(pady=5)
+
+        # Hàm để thực hiện sắp xếp khi người dùng nhấn nút "Sắp xếp"
+        def apply_sort():
+            column_name = column_combo.get()  # Lấy tên cột người dùng chọn
+            order = sort_order.get()  # Lấy kiểu sắp xếp (tăng hoặc giảm dần)
+            
+            # Chọn kiểu sắp xếp: True cho Tăng dần, False cho Giảm dần
+            ascending = True if order == "Tăng dần" else False
+            
+            try:
+                # Gọi hàm sapXep từ sorting.py để sắp xếp dữ liệu
+                self.data = sapXep(self.original_data, column_name, ascending=ascending)
+                
+                # Hiển thị dữ liệu đã sắp xếp lên GUI
+                self.show_data_window()  # Hàm hiển thị dữ liệu lên GUI
+
+            except ValueError as e:
+                # Nếu có lỗi (ví dụ cột không tồn tại), hiển thị thông báo lỗi
+                messagebox.showerror("Lỗi", str(e))
+
+        # Nút để thực hiện sắp xếp
+        sort_button = tk.Button(sort_window, text="Sắp xếp", command=apply_sort)
+        sort_button.pack(pady=20)
+
+        # Nút khôi phục dữ liệu gốc (nếu muốn)
+        def reset_data():
+            self.data = self.original_data.copy()  # Khôi phục dữ liệu gốc
+            self.show_data_window()  # Hiển thị lại dữ liệu gốc
+            messagebox.showinfo("Khôi phục thành công", "Dữ liệu đã được khôi phục về trạng thái ban đầu.")
+        
+        reset_button = tk.Button(sort_window, text="Khôi phục dữ liệu gốc", command=reset_data)
+        reset_button.pack(pady=10)
         
                 
     def save_csv(self):
