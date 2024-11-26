@@ -170,16 +170,43 @@ def Update(data, index, data_input, error_label):
                     if new_value not in valid_weather:
                         raise ValueError(f"Giá trị không hợp lệ cho {col}. Phải là trong {valid_weather}.")
 
-                elif pd.api.types.is_numeric_dtype(data[col]):
-                    try:
-                        if '.' in new_value:
-                            new_value = float(new_value)
-                        else:
-                            new_value = int(new_value)
+                # elif pd.api.types.is_numeric_dtype(data[col]):
+                #     try:
+                #         if '.' in new_value:
+                #             new_value = float(new_value)
+                #         else:
+                #             new_value = int(new_value)
                         
-                        # Kiểm tra giá trị âm
-                        if new_value < 0:
+                #         # Kiểm tra giá trị âm
+                #         if new_value < 0:
+                #             raise ValueError(f"Giá trị không hợp lệ tại {col}. Phải là một số lớn hơn hoặc bằng 0.")
+                #     except ValueError:
+                #         raise ValueError(f"Giá trị của {col} không hợp lệ. Hãy nhập lại một số.")
+                # Kiểm tra các cột số cụ thể
+                elif col in [
+                    "Temperature (°C)",
+                    "Humidity (%)",
+                    "Wind Speed (mph)",
+                    "Precipitation (%)",
+                    "Atmospheric Pressure (hPa)",
+                    "UV Index",
+                    "Visibility (km)",
+                ]:
+                    try:
+                        new_value = float(new_value) if '.' in new_value else int(new_value)
+
+                        # Kiểm tra giá trị âm (trừ những cột cho phép âm như nhiệt độ)
+                        if col != "Temperature (°C)" and new_value < 0:
                             raise ValueError(f"Giá trị không hợp lệ tại {col}. Phải là một số lớn hơn hoặc bằng 0.")
+                        
+                        # Kiểm tra khoảng giá trị tùy thuộc vào cột
+                        if col == "Humidity (%)" and not (0 <= new_value <= 100):
+                            raise ValueError(f"{col} phải nằm trong khoảng từ 0 đến 100.")
+                        elif col == "UV Index" and not (0 <= new_value <= 11):
+                            raise ValueError(f"{col} phải nằm trong khoảng từ 0 đến 11.")
+                        elif col == "Visibility (km)" and new_value < 0:
+                            raise ValueError(f"{col} phải lớn hơn hoặc bằng 0.")
+
                     except ValueError:
                         raise ValueError(f"Giá trị của {col} không hợp lệ. Hãy nhập lại một số.")
 
