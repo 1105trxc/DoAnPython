@@ -147,7 +147,6 @@ def Update(data, index, data_input, error_label):
         # Lặp qua các cột và cập nhật giá trị
         for col in data.columns:
             new_value = data_input.get(col)  # Lấy giá trị từ GUI (ví dụ: Entry hoặc combobox)
-
             if new_value:
                 # Kiểm tra các giá trị hợp lệ cho các cột đặc biệt
                 if col == "Cloud Cover":
@@ -169,20 +168,6 @@ def Update(data, index, data_input, error_label):
                     valid_weather = ["Rainy", "Cloudy", "Sunny", "Snowy"]
                     if new_value not in valid_weather:
                         raise ValueError(f"Giá trị không hợp lệ cho {col}. Phải là trong {valid_weather}.")
-
-                # elif pd.api.types.is_numeric_dtype(data[col]):
-                #     try:
-                #         if '.' in new_value:
-                #             new_value = float(new_value)
-                #         else:
-                #             new_value = int(new_value)
-                        
-                #         # Kiểm tra giá trị âm
-                #         if new_value < 0:
-                #             raise ValueError(f"Giá trị không hợp lệ tại {col}. Phải là một số lớn hơn hoặc bằng 0.")
-                #     except ValueError:
-                #         raise ValueError(f"Giá trị của {col} không hợp lệ. Hãy nhập lại một số.")
-                # Kiểm tra các cột số cụ thể
                 elif col in [
                     "Temperature (°C)",
                     "Humidity (%)",
@@ -198,7 +183,6 @@ def Update(data, index, data_input, error_label):
                         # Kiểm tra giá trị âm (trừ những cột cho phép âm như nhiệt độ)
                         if col != "Temperature (°C)" and new_value < 0:
                             raise ValueError(f"Giá trị không hợp lệ tại {col}. Phải là một số lớn hơn hoặc bằng 0.")
-                        
                         # Kiểm tra khoảng giá trị tùy thuộc vào cột
                         if col == "Humidity (%)" and not (0 <= new_value <= 100):
                             raise ValueError(f"{col} phải nằm trong khoảng từ 0 đến 100.")
