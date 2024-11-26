@@ -234,7 +234,7 @@ class CSVApp:
                 messagebox.showwarning("Cảnh báo", "Vui lòng chọn một dòng để xóa.")
 
         def add_delete_button(data_window, tree, nav_frame):
-            ttk.Button(nav_frame, text="Xóa", command=lambda: on_delete(data_window, tree)).pack(side=tk.LEFT,padx=2,pady=2)
+            ttk.Button(nav_frame, text="Delete", command=lambda: on_delete(data_window, tree)).pack(side=tk.LEFT,padx=2,pady=2)
             
         # Hiển thị cửa sổ dữ liệu và thêm nút xóa
         self.show_data_window(additional_button=lambda data_window, tree, nav_frame: add_delete_button(data_window, tree, nav_frame))
