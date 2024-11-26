@@ -320,11 +320,15 @@ class CSVApp:
         # Tạo Tab 1 - Lọc theo kiểu số
         tab_numeric = ttk.Frame(notebook)
         notebook.add(tab_numeric, text="Lọc kiểu số")
+        numeric_columns = [
+            col for col in self.original_data.columns
+            if pd.api.types.is_numeric_dtype(self.original_data[col])
+        ]
         
         # Nhập cột
         column_label = tk.Label(tab_numeric, text="Chọn cột:")
         column_label.pack(pady=5)
-        column_combo = ttk.Combobox(tab_numeric, values=columns)
+        column_combo = ttk.Combobox(tab_numeric, values=numeric_columns)
         column_combo.pack(pady=5)
         
         # Nhập giá trị tối thiểu và tối đa
@@ -366,10 +370,14 @@ class CSVApp:
         tab_string = ttk.Frame(notebook)
         notebook.add(tab_string, text="Lọc kiểu chuỗi")
 
+        string_columns = [
+            col for col in self.original_data.columns
+            if self.original_data[col].dropna().map(type).eq(str).all()
+        ]
         # Nhập cột
         column_label_string = tk.Label(tab_string, text="Chọn cột:")
         column_label_string.pack(pady=5)
-        column_combo_string = ttk.Combobox(tab_string, values=columns)
+        column_combo_string = ttk.Combobox(tab_string, values= string_columns)
         column_combo_string.pack(pady=5)
 
         condition_label = tk.Label(tab_string, text="Nhập điều kiện lọc:")
@@ -379,13 +387,17 @@ class CSVApp:
 
         # Nút lọc theo kiểu chuỗi
         def apply_string_filter():
+            # Lọc cột có kiểu dữ liệu là chuỗi
+            string_columns = self.original_data.select_dtypes(include=["string"]).columns
+            # Cập nhật giá trị cho ComboBox
+            column_combo_string["values"] = string_columns
+
             column = column_combo_string.get()  # Lấy tên cột từ ComboBox
             condition = condition_entry.get()
             filtered_data = locKieuString(self.original_data, column, condition)
             if filtered_data is not None:
                 self.data = filtered_data  # Cập nhật self.data tạm thời
                 self.show_data_window()
-                messagebox.showinfo("Lọc thành công", "Dữ liệu đã được lọc và hiển thị.")
             else:
                 messagebox.showwarning("Không có dữ liệu", "Không tìm thấy dữ liệu thỏa mãn.")
 
@@ -416,10 +428,17 @@ class CSVApp:
 
                 def save_updated_data():
                     data_input = {
-                        "Cloud Cover": self.cloud_cover_entry.get(),
+                        "Cloud Cover": self.cloud_cover_combobox.get(),
                         "Season": self.season_combobox.get(),
                         "Location": self.location_combobox.get(),
-                        "Weather Type": self.weather_type_combobox.get()
+                        "Weather Type": self.weather_type_combobox.get(),
+                        "Temperature (°C)": float(self.temperature_entry.get()) if self.temperature_entry.get() else None,
+                        "Humidity (%)": float(self.humidity_entry.get()) if self.humidity_entry.get() else None,
+                        "Wind Speed (km/h)": float(self.wind_speed_entry.get()) if self.wind_speed_entry.get() else None,
+                        "Precipitation (%)": float(self.precipitation_entry.get()) if self.precipitation_entry.get() else None,
+                        "Atmospheric Pressure (hPa)": float(self.atmospheric_pressure_entry.get()) if self.atmospheric_pressure_entry.get() else None,
+                        "UV Index": int(self.uv_index_entry.get()) if self.uv_index_entry.get() else None,
+                        "Visibility (km)": float(self.visibility_entry.get()) if self.visibility_entry.get() else None,
                     }
 
                     # Cập nhật dữ liệu trong DataFrame
@@ -433,6 +452,7 @@ class CSVApp:
                 # Tạo cửa sổ cập nhật
                 self.update_window = tk.Toplevel(self.root)
                 self.update_window.title("Cập nhật dữ liệu")
+                # self.update_window.geometry("500x400")
 
                 update_frame = ttk.Frame(self.update_window)
                 update_frame.pack(padx=20, pady=20)
@@ -440,11 +460,10 @@ class CSVApp:
                 self.error_label = ttk.Label(update_frame, text="", foreground="red")
                 self.error_label.grid(row=5, column=0, columnspan=2, pady=5, sticky="ew")
 
-                # Tạo các trường nhập liệu  
                 ttk.Label(update_frame, text="Cloud Cover:").grid(row=0, column=0, padx=5, pady=5)
-                self.cloud_cover_entry = ttk.Entry(update_frame)
-                self.cloud_cover_entry.grid(row=0, column=1, padx=5, pady=5)
-                self.cloud_cover_entry.insert(0, str(self.data.iloc[selected_row]["Cloud Cover"]))
+                self.cloud_cover_combobox = ttk.Combobox(update_frame, values=["Partly cloudy", "Clear", "Overcast", "Cloudy"])
+                self.cloud_cover_combobox.grid(row=0, column=1, padx=5, pady=5)
+                self.cloud_cover_combobox.insert(0, self.data.iloc[selected_row]["Cloud Cover"])
 
                 ttk.Label(update_frame, text="Season:").grid(row=1, column=0, padx=5, pady=5)
                 self.season_combobox = ttk.Combobox(update_frame, values=["Spring", "Summer", "Fall", "Winter"])
@@ -461,9 +480,48 @@ class CSVApp:
                 self.weather_type_combobox.grid(row=3, column=1, padx=5, pady=5)
                 self.weather_type_combobox.set(self.data.iloc[selected_row]["Weather Type"])
 
+                ttk.Label(update_frame, text="Temperature (°C):").grid(row=4, column=0, padx=5, pady=5)
+                self.temperature_entry = ttk.Entry(update_frame)
+                self.temperature_entry.grid(row=4, column=1, padx=5, pady=5)
+                self.temperature_entry.insert(0, str(self.data.iloc[selected_row]["Temperature (°C)"]))
+
+                ttk.Label(update_frame, text="Humidity (%):").grid(row=5, column=0, padx=5, pady=5)
+                self.humidity_entry = ttk.Entry(update_frame)
+                self.humidity_entry.grid(row=5, column=1, padx=5, pady=5)
+                self.humidity_entry.insert(0, str(self.data.iloc[selected_row]["Humidity (%)"]))
+
+                ttk.Label(update_frame, text="Wind Speed (km/h):").grid(row=6, column=0, padx=5, pady=5)
+                self.wind_speed_entry = ttk.Entry(update_frame)
+                self.wind_speed_entry.grid(row=6, column=1, padx=5, pady=5)
+                self.wind_speed_entry.insert(0, str(self.data.iloc[selected_row]["Wind Speed (mph)"]))
+
+                ttk.Label(update_frame, text="Precipitation (%):").grid(row=7, column=0, padx=5, pady=5)
+                self.precipitation_entry = ttk.Entry(update_frame)
+                self.precipitation_entry.grid(row=7, column=1, padx=5, pady=5)
+                self.precipitation_entry.insert(0, str(self.data.iloc[selected_row]["Precipitation (%)"]))
+
+                ttk.Label(update_frame, text="Atmospheric Pressure (hPa):").grid(row=8, column=0, padx=5, pady=5)
+                self.atmospheric_pressure_entry = ttk.Entry(update_frame)
+                self.atmospheric_pressure_entry.grid(row=8, column=1, padx=5, pady=5)
+                self.atmospheric_pressure_entry.insert(0, str(self.data.iloc[selected_row]["Atmospheric Pressure (hPa)"]))
+
+                ttk.Label(update_frame, text="UV Index:").grid(row=9, column=0, padx=5, pady=5)
+                self.uv_index_entry = ttk.Entry(update_frame)
+                self.uv_index_entry.grid(row=9, column=1, padx=5, pady=5)
+                self.uv_index_entry.insert(0, str(self.data.iloc[selected_row]["UV Index"]))
+
+                ttk.Label(update_frame, text="Visibility (km):").grid(row=10, column=0, padx=5, pady=5)
+                self.visibility_entry = ttk.Entry(update_frame)
+                self.visibility_entry.grid(row=10, column=1, padx=5, pady=5)
+                self.visibility_entry.insert(0, str(self.data.iloc[selected_row]["Visibility (km)"]))
+
+
+                 # Tạo khung cho các nút
+                button_frame = ttk.Frame(update_frame)
+                button_frame.grid(row=11, column=0, columnspan=2, pady=10)
                 # Nút lưu và đóng cửa sổ  
-                ttk.Button(update_frame, text="Save", command=save_updated_data).grid(row=6, column=0, padx=5, pady=5)
-                ttk.Button(update_frame, text="Cancel", command=self.update_window.destroy).grid(row=6, column=1, padx=5, pady=5)
+                tk.Button(button_frame, text="Save", command=save_updated_data).pack(side=tk.LEFT, padx=5)
+                ttk.Button(button_frame, text="Cancel", command=self.update_window.destroy).pack(side=tk.LEFT, padx=5)
             else:  
                 messagebox.showwarning("Cảnh báo", "Vui lòng chọn một dòng để cập nhật.")
 
