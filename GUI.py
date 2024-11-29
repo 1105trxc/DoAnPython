@@ -13,7 +13,7 @@ from HamTienIch.sapXep import *
 try:
     data = pd.read_csv(r"dataDaLamSach.csv")
 except FileNotFoundError:
-    messagebox.showerror("Error", "File not found!")
+    messagebox.showerror("Lỗi", "Không tìm thấy file!")
     data = pd.DataFrame()
 
 class CSVApp:
