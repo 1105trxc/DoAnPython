@@ -28,7 +28,7 @@ for col in data.select_dtypes(include=['float64', 'int64']).columns:
     data = remove_outliers(data, col)
 print("Số lượng hàng sau khi xử lý ngoại lệ:", len(data))
 
-# 3. Chuyển đổi kiểu dữ liệu (nếu cần)
+# 3. Chuyển đổi kiểu dữ liệu 
 if 'Humidity' in data.columns:
     data['Humidity'] = data['Humidity'].astype(float)
 if 'UV Index' in data.columns:
@@ -41,11 +41,7 @@ data.drop_duplicates(inplace=True)
 for col in data.select_dtypes(include=['object']).columns:
     data[col] = data[col].str.capitalize()
 
-# 6. Loại bỏ cột không cần thiết
-columns_to_drop = ['Unnecessary_Column']  # Thay tên cột phù hợp
-data.drop(columns=columns_to_drop, errors='ignore', inplace=True)
-
-# 7. Thay đổi tên cột (Thêm đơn vị):
+# 6. Thay đổi tên cột (Thêm đơn vị):
 data.rename(columns={
     'Temperature': 'Temperature (\u00b0C)', 
     'Humidity': 'Humidity (%)', 
@@ -53,7 +49,7 @@ data.rename(columns={
     'Atmospheric Pressure': 'Atmospheric Pressure (hPa)'
 }, inplace=True)
 
-# 8. Lưu dữ liệu đã làm sạch
+# 7. Lưu dữ liệu đã làm sạch
 data.to_csv('dataDaLamSach.csv', index=False, encoding='utf-8-sig')
 
 print("Dữ liệu đã làm sạch:")
