@@ -461,7 +461,7 @@ class CSVApp:
                         # Nếu tất cả đều hợp lệ, thực hiện lưu dữ liệu
                         for key, value in data_input.items():
                             if key not in ["Cloud Cover", "Season", "Location", "Weather Type"]:
-                                # Chuyển đổi các giá trị số thành float hoặc int khi cần
+                                # Chuyển đổi các giá  trị số thành float hoặc int khi cần
                                 if '.' in value:
                                     value = float(value)
                                 else:
