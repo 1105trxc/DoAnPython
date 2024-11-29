@@ -31,8 +31,6 @@ print("Số lượng hàng sau khi xử lý ngoại lệ:", len(data))
 # 3. Chuyển đổi kiểu dữ liệu 
 if 'Humidity' in data.columns:
     data['Humidity'] = data['Humidity'].astype(float)
-if 'UV Index' in data.columns:
-    data['UV Index'] = data['UV Index'].astype(float)
 
 # 4. Loại bỏ dữ liệu trùng lặp
 data.drop_duplicates(inplace=True)
