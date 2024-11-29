@@ -76,32 +76,4 @@ def drawUVTheoMua():
     addValueLabelsLine(ax)
     plt.show()
 
-# Menu để chọn biểu đồ
-def Draw():
-    while True:
-        print("\nChọn loại biểu đồ muốn vẽ:")
-        print("1. Nhiệt độ trung bình theo mùa")
-        print("2. Tốc độ gió trung bình theo mùa")
-        print("3. Khả năng có mưa theo mùa")
-        print("4. Độ ẩm trung bình theo mùa")
-        print("5. Biến động chỉ số UV theo mùa")
-        print("6. Thoát")
-
-        choice = input("Nhập lựa chọn của bạn: ")
-        
-        if choice == '1':
-            drawNhietDoTheoMua()
-        elif choice == '2':
-           drawSucGioTheoMua()
-        elif choice == '3':
-            drawKhaNangMuaTheoMua()
-        elif choice == '4':
-           drawDoAmTheoMua()
-        elif choice == '5':
-            drawUVTheoMua()
-        elif choice == '6':
-            print("Thoát chương trình.")
-            break
-        else:
-            print("Lựa chọn không hợp lệ. Vui lòng thử lại.")
 

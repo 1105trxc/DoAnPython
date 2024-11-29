@@ -76,33 +76,5 @@ def drawUVTheoKhuVuc():
     addValueLabelsLine(ax)
     plt.show()
 
-# Menu để chọn biểu đồ
-def Draw():
-    while True:
-        print("\nChọn loại biểu đồ muốn vẽ:")
-        print("1. Nhiệt độ trung bình theo khu vực")
-        print("2. Tốc độ gió trung bình theo khu vực")
-        print("3. Khả năng có mưa theo khu vực")
-        print("4. Độ ẩm trung bình theo khu vực")
-        print("5. Biến động chỉ số UV theo khu vực")
-        print("6. Thoát")
-
-        choice = input("Nhập lựa chọn của bạn: ")
-        
-        if choice == '1':
-            drawNhietDoTheoKhuVuc()
-        elif choice == '2':
-           drawSucGioTheoKhuVuc()
-        elif choice == '3':
-            drawKhaNangMuaTheoKhuVuc()
-        elif choice == '4':
-           drawDoAmTheoKhuVuc()
-        elif choice == '5':
-            drawUVTheoKhuVuc()
-        elif choice == '6':
-            print("Thoát chương trình.")
-            break
-        else:
-            print("Lựa chọn không hợp lệ. Vui lòng thử lại.")
 
 

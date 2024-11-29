@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 # Đọc dữ liệu
 data = pd.read_csv('weather_classification_data.csv', encoding='utf-8')
