@@ -450,7 +450,7 @@ class CSVApp:
                             "Visibility (km)": self.visibility_entry.get(),
                         }
 
-                        # Kiểm tra các ô nhập liệu số có hợp lệ không
+                        # Kiểm tra các ô nhập liệu số có hợp lệ
                         for key, value in data_input.items():
                             if key not in ["Cloud Cover", "Season", "Location", "Weather Type"]:  # Những trường không phải số
                                 if not is_number(value):
