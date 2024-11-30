@@ -25,9 +25,9 @@ class CSVApp:
         self.original_data = self.data.copy()  
         # Center the main window
         self.center_window(400, 300)
-        
+                                               
         # UI Components
-        self.create_widgets()
+        self.create_widgets()                               
 
     def center_window(self, width, height):
         """Đặt cửa sổ chính giữa màn hình."""
@@ -123,12 +123,14 @@ class CSVApp:
                 current_page += 1
                 load_page_data(current_page)
                 page_label.config(text=f"Page {current_page}/{total_pages}")
+
         def prev_page():
             nonlocal current_page
             if current_page > 1:
                 current_page -= 1
                 load_page_data(current_page)
                 page_label.config(text=f"Page {current_page}/{total_pages}")
+                
         # Tạo thanh điều hướng
         nav_frame = ttk.Frame(data_window)
         nav_frame.pack(fill=tk.X, pady=10)
@@ -456,7 +458,33 @@ class CSVApp:
                                 if not is_number(value):
                                     messagebox.showerror("Lỗi dữ liệu", f"Vui lòng nhập một giá trị hợp lệ cho '{key}'.")
                                     return  # Dừng lại và không lưu nếu có lỗi
+                                 # Kiểm tra các ô nhập liệu số có hợp lệ và trong khoảng giá trị cho phép
 
+                                # Chuyển đổi giá trị số để kiểm tra ràng buộc
+                                value = float(value)
+
+                                # Kiểm tra ràng buộc giá trị
+                                if key == "Temperature (°C)" and not (-30 <= value <= 120):
+                                    messagebox.showerror("Lỗi dữ liệu", "Nhiệt độ phải nằm trong khoảng -30 đến 120°C.")
+                                    return
+                                if key == "Humidity (%)" and not (0 <= value <= 120):
+                                    messagebox.showerror("Lỗi dữ liệu", "Độ ẩm phải nằm trong khoảng 0% đến 120%.")
+                                    return
+                                if key == "Wind Speed (mph)" and not (0 <= value <= 50):
+                                    messagebox.showerror("Lỗi dữ liệu", "Tốc độ gió phải nằm trong khoảng 0 đến 50 mph.")
+                                    return
+                                if key == "Precipitation (%)" and not (0 <= value <= 120):
+                                    messagebox.showerror("Lỗi dữ liệu", "Lượng mưa phải nằm trong khoảng 0% đến 120%.")
+                                    return
+                                if key == "Atmospheric Pressure (hPa)" and not (800 <= value <= 1250):
+                                    messagebox.showerror("Lỗi dữ liệu", "Áp suất khí quyển phải nằm trong khoảng 800 đến 1250 hPa.")
+                                    return
+                                if key == "UV Index" and not (0 <= value <= 20):
+                                    messagebox.showerror("Lỗi dữ liệu", "Chỉ số UV phải nằm trong khoảng 0 đến 20.")
+                                    return
+                                if key == "Visibility (km)" and not (0 <= value <= 20):
+                                    messagebox.showerror("Lỗi dữ liệu", "Tầm nhìn phải nằm trong khoảng 0 đến 20 km.")
+                                    return
 
                         # Nếu tất cả đều hợp lệ, thực hiện lưu dữ liệu
                         for key, value in data_input.items():
