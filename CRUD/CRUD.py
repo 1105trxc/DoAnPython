@@ -15,55 +15,73 @@ def Create(data, data_input, error_label):
     try:
         # Kiểm tra và chuyển đổi các giá trị từ input
         try:
-            temperature = float(data_input["Temperature (°C)"])  # Kiểm tra nếu là số
+            temperature = float(data_input["Temperature (°C)"])
+            if temperature < 0:
+                raise ValueError("Nhiệt độ không được là số âm!")
         except ValueError:
-            raise ValueError("Nhiệt độ phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
+            raise ValueError("Nhiệt độ phải là một số hợp lệ!")
 
         try:
             humidity = float(data_input["Humidity (%)"])
+            if not (0 <= humidity <= 100):
+                raise ValueError("Độ ẩm phải nằm trong khoảng 0 đến 100%!")
         except ValueError:
-            raise ValueError("Độ ẩm phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
+            raise ValueError("Độ ẩm phải là một số hợp lệ!")
 
         try:
             wind_speed = float(data_input["Wind Speed (mph)"])
+            if wind_speed < 0:
+                raise ValueError("Tốc độ gió không được là số âm!")
         except ValueError:
-            raise ValueError("Tốc độ gió phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
+            raise ValueError("Tốc độ gió phải là một số hợp lệ!")
 
         try:
             precipitation = float(data_input["Precipitation (%)"])
+            if not (0 <= precipitation <= 100):
+                raise ValueError("Lượng mưa phải nằm trong khoảng 0 đến 100%!")
         except ValueError:
-            raise ValueError("Lượng mưa phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
+            raise ValueError("Lượng mưa phải là một số hợp lệ!")
 
         cloud_cover = data_input["Cloud Cover"]
-        if not cloud_cover:  # Kiểm tra nếu Cloud Cover trống
+        if not cloud_cover.strip():  # Kiểm tra nếu Cloud Cover trống
             raise ValueError("Mây không được để trống!")
+        cloud_cover = cloud_cover.strip().capitalize()
 
         try:
             pressure = float(data_input["Atmospheric Pressure (hPa)"])
+            if pressure < 0:
+                raise ValueError("Áp suất không được là số âm!")
         except ValueError:
-            raise ValueError("Áp suất không khí phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
+            raise ValueError("Áp suất không khí phải là một số hợp lệ!")
 
         try:
             uv_index = int(data_input["UV Index"])
+            if not (0 <= uv_index <= 100):
+                raise ValueError("Chỉ số UV phải nằm trong khoảng 0 đến 100!")
         except ValueError:
-            raise ValueError("Chỉ số UV phải là một số nguyên hợp lệ!")  # Nếu không phải số nguyên, báo lỗi
+            raise ValueError("Chỉ số UV phải là một số nguyên hợp lệ!")
 
         season = data_input["Season"]
-        if not season:  # Kiểm tra nếu Season trống
+        if not season.strip():
             raise ValueError("Mùa không được để trống!")
+        season = season.strip().capitalize()
 
         try:
             visibility = float(data_input["Visibility (km)"])
+            if visibility < 0:
+                raise ValueError("Tầm nhìn không được là số âm!")
         except ValueError:
-            raise ValueError("Tầm nhìn phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
+            raise ValueError("Tầm nhìn phải là một số hợp lệ!")
 
         location = data_input["Location"]
-        if not location:  # Kiểm tra nếu Location trống
+        if not location.strip():
             raise ValueError("Vị trí không được để trống!")
+        location = location.strip().capitalize()
 
         weather_type = data_input["Weather Type"]
-        if not weather_type:  # Kiểm tra nếu Weather Type trống
+        if not weather_type.strip():
             raise ValueError("Loại thời tiết không được để trống!")
+        weather_type = weather_type.strip().capitalize()
 
         # Tạo hàng mới dưới dạng DataFrame
         new_row = pd.DataFrame([{
@@ -91,7 +109,7 @@ def Create(data, data_input, error_label):
         # Hiển thị thông báo lỗi trực tiếp trên GUI nếu có lỗi chuyển đổi dữ liệu
         error_message = f"Dữ liệu nhập vào không hợp lệ: {e}"  # Lấy thông báo lỗi chi tiết
         error_label.config(text=error_message, foreground="red")  # Hiển thị lỗi với màu đỏ
-        return None  # Trả về None để thông báo lỗi đã xảy ra
+        return None  # Trả về None để thông báo lỗi đã
 
 # Hàm xóa dữ liệu
 def Delete(data, selected_row):
