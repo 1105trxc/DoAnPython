@@ -12,6 +12,7 @@ def addValueLabelsBar(ax):
                     (p.get_x() + p.get_width() / 2., p.get_height()), 
                     ha='center', va='center', 
                     xytext=(0, 8), textcoords='offset points')
+        
 # Hàm để thêm nhãn giá trị trên đường
 def addValueLabelsLine(ax):
     for line in ax.lines:  

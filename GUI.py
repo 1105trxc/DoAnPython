@@ -458,7 +458,7 @@ class CSVApp:
                                 if not is_number(value):
                                     messagebox.showerror("Lỗi dữ liệu", f"Vui lòng nhập một giá trị hợp lệ cho '{key}'.")
                                     return  # Dừng lại và không lưu nếu có lỗi
-                                 # Kiểm tra các ô nhập liệu số có hợp lệ và trong khoảng giá trị cho phép
+                                # Kiểm tra các ô nhập liệu số có hợp lệ và trong khoảng giá trị cho phép
 
                                 # Chuyển đổi giá trị số để kiểm tra ràng buộc
                                 value = float(value)
@@ -485,7 +485,7 @@ class CSVApp:
                                 if key == "Visibility (km)" and not (0 <= value <= 20):
                                     messagebox.showerror("Lỗi dữ liệu", "Tầm nhìn phải nằm trong khoảng 0 đến 20 km.")
                                     return
-
+                                
                         # Nếu tất cả đều hợp lệ, thực hiện lưu dữ liệu
                         for key, value in data_input.items():
                             if key not in ["Cloud Cover", "Season", "Location", "Weather Type"]:
