@@ -17,18 +17,18 @@ def Create(data, data_input, error_label):
         # Kiểm tra và chuyển đổi các giá trị từ input
         def validate_field(key, value):
             """Hàm kiểm tra giá trị theo từng trường."""
-            if key == "Temperature (°C)" and not (-30 <= value <= 120):
-                raise ValueError("Nhiệt độ phải nằm trong khoảng -30 đến 120°C.")
-            if key == "Humidity (%)" and not (0 <= value <= 120):
-                raise ValueError("Độ ẩm phải nằm trong khoảng 0% đến 120%.")
-            if key == "Wind Speed (mph)" and not (0 <= value <= 50):
-                raise ValueError("Tốc độ gió phải nằm trong khoảng 0 đến 50 km/h.")
-            if key == "Precipitation (%)" and not (0 <= value <= 120):
-                raise ValueError("Lượng mưa phải nằm trong khoảng 0% đến 120%.")
-            if key == "Atmospheric Pressure (hPa)" and not (800 <= value <= 1250):
-                raise ValueError("Áp suất khí quyển phải nằm trong khoảng 800 đến 1250 hPa.")
-            if key == "UV Index" and not (0 <= value <= 20):
-                raise ValueError("Chỉ số UV phải nằm trong khoảng 0 đến 20.")
+            if key == "Temperature (°C)" and not (-25 <= value <= 71):
+                raise ValueError("Nhiệt độ phải nằm trong khoảng -25 đến 71°C.")
+            if key == "Humidity (%)" and not (0 <= value <= 110):
+                raise ValueError("Độ ẩm phải nằm trong khoảng 0% đến 110%.")
+            if key == "Wind Speed (km/h)" and not (0 <= value <= 40):
+                raise ValueError("Tốc độ gió phải nằm trong khoảng 0 đến 40 km/h.")
+            if key == "Precipitation (%)" and not (0 <= value <= 110):
+                raise ValueError("Lượng mưa phải nằm trong khoảng 0% đến 110%.")
+            if key == "Atmospheric Pressure (hPa)" and not (900 <= value <= 1100):
+                raise ValueError("Áp suất khí quyển phải nằm trong khoảng 900 đến 1110 hPa.")
+            if key == "UV Index" and not (0 <= value <= 13):
+                raise ValueError("Chỉ số UV phải nằm trong khoảng 0 đến 13.")
             if key == "Visibility (km)" and not (0 <= value <= 20):
                 raise ValueError("Tầm nhìn phải nằm trong khoảng 0 đến 20 km.")
             return value
