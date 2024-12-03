@@ -111,7 +111,7 @@ class CSVApp:
     def load_image(self):
         """Load and display the image in the center of the window."""
         # Load the image using Pillow
-        image = Image.open("weather.png")  # Replace with your image file path
+        image = Image.open("weather1.png")  # Replace with your image file path
         image = image.resize((800, 400), Image.Resampling.LANCZOS)  # Updated for Pillow 10+
         self.photo = ImageTk.PhotoImage(image)
 
@@ -219,14 +219,11 @@ class CSVApp:
         """Đặt cửa sổ con ở giữa màn hình."""
         screen_width = window.winfo_screenwidth()
         screen_height = window.winfo_screenheight()
-
         x = (screen_width - width) // 2
         y = (screen_height - height) // 2
-
         window.geometry(f"{width}x{height}+{x}+{y}")
 
     def add_row(self):
-
         """Add a new row to the data by calling Create from CRUD."""
         # Tạo cửa sổ nhập liệu
         input_window = tk.Toplevel(self.root)
@@ -236,47 +233,6 @@ class CSVApp:
         # Tạo frame chính để chứa các thành phần giao diện
         main_frame = ttk.Frame(input_window)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
-
-        # Tạo các trường nhập liệu
-        # labels = [
-        #     "Temperature (°C)", "Humidity (%)", "Wind Speed (mph)", "Precipitation (%)", 
-        #     "Cloud Cover", "Atmospheric Pressure (hPa)", "UV Index", "Season", 
-        #     "Visibility (km)", "Location", "Weather Type"
-        # ]
-        
-        # entries = {}
-    
-        # # Tạo nhãn và trường nhập liệu theo bố cục lưới
-        # for i, label in enumerate(labels):
-        #     ttk.Label(main_frame, text=label).grid(row=i, column=0, sticky="w", pady=5)
-        #     entry = ttk.Entry(main_frame, width=30)
-        #     entry.grid(row=i, column=1, pady=5, padx=10)
-        #     entries[label] = entry
-
-        # error_label = ttk.Label(main_frame, text="", foreground="red")
-        # error_label.grid(row=len(labels)+1, column=0, columnspan=2, pady=5, sticky="ew")
-        # def on_add():
-        #         # Lấy dữ liệu từ các trường nhập liệu
-        #         data_input = {label: entries[label].get() for label in labels}
-
-        #         # Thêm hàng mới vào DataFrame thông qua hàm Create
-        #         updated_data = Create(self.data, data_input , error_label)  # Sử dụng hàm Create của bạn
-
-        #         #if isinstance(updated_data, pd.DataFrame):  # Kiểm tra dữ liệu trả về
-        #         if updated_data is not None:
-        #             self.data = updated_data  # Cập nhật dữ liệu mới
-        #             self.original_data = self.data.copy()  # Cập nhật bản sao dữ liệu gốc nếu cần
-        #             messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")  # Hiển thị thông báo thành công
-        #             self.save_csv()  # Lưu lại CSV nếu cần
-        #             input_window.destroy()  # Đóng cửa sổ nhập liệu
-        #         else:
-        #             # Nếu dữ liệu không hợp lệ, hiển thị thông báo lỗi
-        #             #messagebox.showerror("Lỗi", "Dữ liệu không hợp lệ!")                   
-        #             messagebox.showerror("Lỗi", f"Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại!")
-        #             return
-        # #Nút thêm dữ liệu
-        # ttk.Button(main_frame, text="Thêm", command=on_add).grid(row=len(labels), column=0, columnspan=2, pady=20)
-
         combo_fields = {
             "Cloud Cover": ["Partly cloudy", "Clear", "Overcast", "Cloudy"],
             "Season": ["Spring", "Summer", "Fall", "Winter"],
