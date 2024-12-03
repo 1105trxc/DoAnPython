@@ -1,5 +1,6 @@
-Temperature (?C),Humidity (%),Wind Speed (mph),Precipitation (%),Cloud Cover,Atmospheric Pressure (hPa),UV Index,Season,Visibility (km),Location,Weather Type
-14.0,73.0,9.5,82.0,Partly cloudy,1010.82,2,Winter,3.5,Inland,Sunny
+Temperature (°C),Humidity (%),Wind Speed (mph),Precipitation (%),Cloud Cover,Atmospheric Pressure (hPa),UV Index,Season,Visibility (km),Location,Weather Type
+1.0,1.0,1.0,1.0,Partly cloudy,1.0,1,Spring,1.0,Inland,Rainy
+14.0,73.0,9.5,82.0,Partly cloudy,1010.82,2,Winter,3.5,Inland,Rainy
 39.0,96.0,8.5,71.0,Partly cloudy,1011.43,7,Spring,10.0,Inland,Cloudy
 38.0,83.0,1.5,82.0,Clear,1026.25,7,Spring,1.0,Coastal,Sunny
 27.0,74.0,17.0,66.0,Overcast,990.67,1,Winter,2.5,Mountain,Rainy
@@ -11584,6 +11585,3 @@ Temperature (?C),Humidity (%),Wind Speed (mph),Precipitation (%),Cloud Cover,Atm
 30.0,77.0,5.5,28.0,Overcast,1012.69,3,Autumn,9.0,Coastal,Cloudy
 3.0,76.0,10.0,94.0,Overcast,984.27,0,Winter,2.0,Inland,Snowy
 -5.0,38.0,0.0,92.0,Overcast,1015.37,5,Autumn,10.0,Mountain,Rainy
-,1.0,11.0,1.0,Dsfhsdf,5.0,5,Dsfccd,5.0,Xcvb,Tgj
-,8.0,8.0,8.0,Vvvv,88.0,8,Vvvv,8.0,Vvvvv,Vvvvv
-,8.0,8.0,8.0,Ppp,8.0,8,Ppp,8.0,Ppp,Ppp

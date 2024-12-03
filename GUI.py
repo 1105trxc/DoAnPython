@@ -236,45 +236,105 @@ class CSVApp:
         # Tạo frame chính để chứa các thành phần giao diện
         main_frame = ttk.Frame(input_window)
         main_frame.pack(fill=tk.BOTH, expand=True, padx=15, pady=15)
+
         # Tạo các trường nhập liệu
-        labels = [
-            "Temperature (°C)", "Humidity (%)", "Wind Speed (mph)", "Precipitation (%)", 
-            "Cloud Cover", "Atmospheric Pressure (hPa)", "UV Index", "Season", 
-            "Visibility (km)", "Location", "Weather Type"
-        ]
+        # labels = [
+        #     "Temperature (°C)", "Humidity (%)", "Wind Speed (mph)", "Precipitation (%)", 
+        #     "Cloud Cover", "Atmospheric Pressure (hPa)", "UV Index", "Season", 
+        #     "Visibility (km)", "Location", "Weather Type"
+        # ]
         
-        entries = {}
+        # entries = {}
     
-        # Tạo nhãn và trường nhập liệu theo bố cục lưới
-        for i, label in enumerate(labels):
+        # # Tạo nhãn và trường nhập liệu theo bố cục lưới
+        # for i, label in enumerate(labels):
+        #     ttk.Label(main_frame, text=label).grid(row=i, column=0, sticky="w", pady=5)
+        #     entry = ttk.Entry(main_frame, width=30)
+        #     entry.grid(row=i, column=1, pady=5, padx=10)
+        #     entries[label] = entry
+
+        # error_label = ttk.Label(main_frame, text="", foreground="red")
+        # error_label.grid(row=len(labels)+1, column=0, columnspan=2, pady=5, sticky="ew")
+        # def on_add():
+        #         # Lấy dữ liệu từ các trường nhập liệu
+        #         data_input = {label: entries[label].get() for label in labels}
+
+        #         # Thêm hàng mới vào DataFrame thông qua hàm Create
+        #         updated_data = Create(self.data, data_input , error_label)  # Sử dụng hàm Create của bạn
+
+        #         #if isinstance(updated_data, pd.DataFrame):  # Kiểm tra dữ liệu trả về
+        #         if updated_data is not None:
+        #             self.data = updated_data  # Cập nhật dữ liệu mới
+        #             self.original_data = self.data.copy()  # Cập nhật bản sao dữ liệu gốc nếu cần
+        #             messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")  # Hiển thị thông báo thành công
+        #             self.save_csv()  # Lưu lại CSV nếu cần
+        #             input_window.destroy()  # Đóng cửa sổ nhập liệu
+        #         else:
+        #             # Nếu dữ liệu không hợp lệ, hiển thị thông báo lỗi
+        #             #messagebox.showerror("Lỗi", "Dữ liệu không hợp lệ!")                   
+        #             messagebox.showerror("Lỗi", f"Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại!")
+        #             return
+        # #Nút thêm dữ liệu
+        # ttk.Button(main_frame, text="Thêm", command=on_add).grid(row=len(labels), column=0, columnspan=2, pady=20)
+
+        combo_fields = {
+            "Cloud Cover": ["Partly cloudy", "Clear", "Overcast", "Cloudy"],
+            "Season": ["Spring", "Summer", "Fall", "Winter"],
+            "Location": ["Inland", "Mountain", "Coastal"],
+            "Weather Type": ["Rainy", "Cloudy", "Sunny", "Snowy"]
+        }
+
+        # Các trường dữ liệu còn lại (nhập liệu tự do)
+        text_fields = [
+            "Temperature (°C)", "Humidity (%)", "Wind Speed (mph)", "Precipitation (%)",
+            "Atmospheric Pressure (hPa)", "UV Index", "Visibility (km)"
+        ]
+
+        entries = {}
+
+        # Tạo các trường combobox
+        for i, (label, values) in enumerate(combo_fields.items()):
+            ttk.Label(main_frame, text=label).grid(row=i, column=0, sticky="w", pady=5)
+            combobox = ttk.Combobox(main_frame, values=values, state="readonly")
+            combobox.grid(row=i, column=1, pady=5, padx=10)
+            combobox.set(values[0])  # Thiết lập giá trị mặc định
+            entries[label] = combobox
+
+        # Tạo các trường nhập liệu tự do
+        offset = len(combo_fields)
+        for i, label in enumerate(text_fields, start=offset):
             ttk.Label(main_frame, text=label).grid(row=i, column=0, sticky="w", pady=5)
             entry = ttk.Entry(main_frame, width=30)
             entry.grid(row=i, column=1, pady=5, padx=10)
             entries[label] = entry
 
+        # Nhãn hiển thị lỗi
         error_label = ttk.Label(main_frame, text="", foreground="red")
-        error_label.grid(row=len(labels)+1, column=0, columnspan=2, pady=5, sticky="ew")
+        error_label.grid(row=len(combo_fields) + len(text_fields) + 1, column=0, columnspan=2, pady=5, sticky="ew")
         def on_add():
-                # Lấy dữ liệu từ các trường nhập liệu
-                data_input = {label: entries[label].get() for label in labels}
+            """Hàm xử lý khi nhấn nút 'Thêm'."""
+            # Lấy dữ liệu từ các trường nhập liệu và combobox
+            data_input = {label: (widget.get() if isinstance(widget, ttk.Combobox) else widget.get())
+                        for label, widget in entries.items()}
 
-                # Thêm hàng mới vào DataFrame thông qua hàm Create
-                updated_data = Create(self.data, data_input , error_label)  # Sử dụng hàm Create của bạn
+            # Gọi hàm Create để thêm hàng mới
+            updated_data = Create(self.data, data_input, error_label)
 
-                #if isinstance(updated_data, pd.DataFrame):  # Kiểm tra dữ liệu trả về
-                if updated_data is not None:
-                    self.data = updated_data  # Cập nhật dữ liệu mới
-                    self.original_data = self.data.copy()  # Cập nhật bản sao dữ liệu gốc nếu cần
-                    messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")  # Hiển thị thông báo thành công
-                    self.save_csv()  # Lưu lại CSV nếu cần
-                    input_window.destroy()  # Đóng cửa sổ nhập liệu
-                else:
-                    # Nếu dữ liệu không hợp lệ, hiển thị thông báo lỗi
-                    #messagebox.showerror("Lỗi", "Dữ liệu không hợp lệ!")                   
-                    messagebox.showerror("Lỗi", f"Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại!")
-                    return
-        #Nút thêm dữ liệu
-        ttk.Button(main_frame, text="Thêm", command=on_add).grid(row=len(labels), column=0, columnspan=2, pady=20)
+            if updated_data is not None:
+                self.data = updated_data  # Cập nhật dữ liệu mới
+                self.original_data = self.data.copy()  # Cập nhật bản sao dữ liệu gốc
+                messagebox.showinfo("Thông báo", "Thêm dữ liệu thành công!")
+                self.save_csv()  # Lưu dữ liệu vào CSV nếu cần
+                input_window.destroy()  # Đóng cửa sổ nhập liệu
+            else:
+                # Nếu dữ liệu không hợp lệ, hiển thị thông báo lỗi
+                messagebox.showerror("Lỗi", "Dữ liệu nhập vào không hợp lệ, vui lòng kiểm tra lại!")
+
+        # Nút thêm dữ liệu
+        ttk.Button(main_frame, text="Thêm", command=on_add).grid(
+            row=len(combo_fields) + len(text_fields), column=0, columnspan=2, pady=20
+        )
+
    
     def delete_row(self):
         """Hiển thị cửa sổ để người dùng chọn dòng cần xóa."""
@@ -479,12 +539,50 @@ class CSVApp:
         reset_button = tk.Button(sort_window, text="Khôi phục dữ liệu gốc", command=reset_data)
         reset_button.pack(pady=10)
 
-
+        
     def update_data(self):  
         """Hiển thị cửa sổ để người dùng chọn dòng cần cập nhật."""  
         if self.data.empty:  
             messagebox.showerror("Lỗi", "Không có dữ liệu để cập nhật.")  
             return  
+        def is_number(value):
+            """Kiểm tra xem giá trị có phải là số hợp lệ hay không."""
+            try:
+                float(value)
+                return True
+            except ValueError:
+                return False
+        def validate_and_convert(data_input):
+            """Xác minh và chuyển đổi giá trị đầu vào."""
+            try:
+                for key, value in data_input.items():
+                    # Chỉ kiểm tra các trường số
+                    if key not in ["Cloud Cover", "Season", "Location", "Weather Type"]:
+                        if not is_number(value):
+                            raise ValueError(f"Vui lòng nhập một giá trị hợp lệ cho '{key}'.")
+                        value = float(value)
+                        # Kiểm tra giá trị trong khoảng hợp lệ
+                        if key == "Temperature (°C)" and not (-30 <= value <= 120):
+                            raise ValueError("Nhiệt độ phải nằm trong khoảng -30 đến 120°C.")
+                        if key == "Humidity (%)" and not (0 <= value <= 120):
+                            raise ValueError("Độ ẩm phải nằm trong khoảng 0% đến 120%.")
+                        if key == "Wind Speed (km/h)" and not (0 <= value <= 50):
+                            raise ValueError("Tốc độ gió phải nằm trong khoảng 0 đến 50 km/h.")
+                        if key == "Precipitation (%)" and not (0 <= value <= 120):
+                            raise ValueError("Lượng mưa phải nằm trong khoảng 0% đến 120%.")
+                        if key == "Atmospheric Pressure (hPa)" and not (800 <= value <= 1250):
+                            raise ValueError("Áp suất khí quyển phải nằm trong khoảng 800 đến 1250 hPa.")
+                        if key == "UV Index" and not (0 <= value <= 20):
+                            raise ValueError("Chỉ số UV phải nằm trong khoảng 0 đến 20.")
+                        if key == "Visibility (km)" and not (0 <= value <= 20):
+                            raise ValueError("Tầm nhìn phải nằm trong khoảng 0 đến 20 km.")
+                        # Lưu giá trị đã chuyển đổi
+                        data_input[key] = value
+                return data_input
+            except ValueError as e:
+                messagebox.showerror("Lỗi dữ liệu", str(e))
+                return None
+            
 
         def on_update(data_window, tree):  
             selected_item = tree.selection()
@@ -507,6 +605,10 @@ class CSVApp:
                         "Visibility (km)": float(self.visibility_entry.get()) if self.visibility_entry.get() else None,
                     }
 
+                    valid_data = validate_and_convert(data_input)
+                    if valid_data is None:
+                        return  # Dừng lại nếu dữ liệu không hợp lệ
+                    
                     # Cập nhật dữ liệu trong DataFrame
                     for column, value in data_input.items():
                         self.data.at[selected_row, column] = value
