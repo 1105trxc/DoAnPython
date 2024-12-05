@@ -33,7 +33,8 @@ def locKieuString(df, column, condition):
     """
     try:
         # Lọc dữ liệu theo điều kiện
-        df_filtered = df[df[column].str.contains(condition, na=False)]
+        condition = condition.strip()
+        df_filtered = df[df[column].str.fullmatch(condition,case=False, na=False)]
 
         # Kiểm tra nếu không có dữ liệu sau khi lọc
         if df_filtered.empty:

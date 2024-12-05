@@ -10,60 +10,58 @@ except FileNotFoundError:
         'Cloud Cover', 'Atmospheric Pressure (hPa)', 'UV Index', 'Season',
         'Visibility (km)', 'Location', 'Weather Type'
     ])
+    
 # Hàm thêm dữ liệu
 def Create(data, data_input, error_label):
     try:
         # Kiểm tra và chuyển đổi các giá trị từ input
-        try:
-            temperature = float(data_input["Temperature (°C)"])  # Kiểm tra nếu là số
-        except ValueError:
-            raise ValueError("Nhiệt độ phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
+        def validate_field(key, value):
+            """Hàm kiểm tra giá trị theo từng trường."""
+            if key == "Temperature (°C)" and not (-25 <= value <= 71):
+                raise ValueError("Nhiệt độ phải nằm trong khoảng -25 đến 71°C.")
+            if key == "Humidity (%)" and not (0 <= value <= 110):
+                raise ValueError("Độ ẩm phải nằm trong khoảng 0% đến 110%.")
+            if key == "Wind Speed (km/h)" and not (0 <= value <= 40):
+                raise ValueError("Tốc độ gió phải nằm trong khoảng 0 đến 40 km/h.")
+            if key == "Precipitation (%)" and not (0 <= value <= 110):
+                raise ValueError("Lượng mưa phải nằm trong khoảng 0% đến 110%.")
+            if key == "Atmospheric Pressure (hPa)" and not (900 <= value <= 1100):
+                raise ValueError("Áp suất khí quyển phải nằm trong khoảng 900 đến 1110 hPa.")
+            if key == "UV Index" and not (0 <= value <= 13):
+                raise ValueError("Chỉ số UV phải nằm trong khoảng 0 đến 13.")
+            if key == "Visibility (km)" and not (0 <= value <= 20):
+                raise ValueError("Tầm nhìn phải nằm trong khoảng 0 đến 20 km.")
+            return value
 
-        try:
-            humidity = float(data_input["Humidity (%)"])
-        except ValueError:
-            raise ValueError("Độ ẩm phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
+        # Lấy và kiểm tra từng trường số
+        temperature = validate_field("Temperature (°C)", float(data_input["Temperature (°C)"]))
+        humidity = validate_field("Humidity (%)", float(data_input["Humidity (%)"]))
+        wind_speed = validate_field("Wind Speed (mph)", float(data_input["Wind Speed (mph)"]))
+        precipitation = validate_field("Precipitation (%)", float(data_input["Precipitation (%)"]))
+        pressure = validate_field("Atmospheric Pressure (hPa)", float(data_input["Atmospheric Pressure (hPa)"]))
+        uv_index = validate_field("UV Index", int(data_input["UV Index"]))
+        visibility = validate_field("Visibility (km)", float(data_input["Visibility (km)"]))
 
-        try:
-            wind_speed = float(data_input["Wind Speed (mph)"])
-        except ValueError:
-            raise ValueError("Tốc độ gió phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
-
-        try:
-            precipitation = float(data_input["Precipitation (%)"])
-        except ValueError:
-            raise ValueError("Lượng mưa phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
-
-        cloud_cover = data_input["Cloud Cover"]
-        if not cloud_cover:  # Kiểm tra nếu Cloud Cover trống
+        # Kiểm tra các trường dạng chuỗi
+        cloud_cover = data_input["Cloud Cover"].strip()
+        if not cloud_cover:
             raise ValueError("Mây không được để trống!")
+        cloud_cover = cloud_cover.capitalize()
 
-        try:
-            pressure = float(data_input["Atmospheric Pressure (hPa)"])
-        except ValueError:
-            raise ValueError("Áp suất không khí phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
-
-        try:
-            uv_index = int(data_input["UV Index"])
-        except ValueError:
-            raise ValueError("Chỉ số UV phải là một số nguyên hợp lệ!")  # Nếu không phải số nguyên, báo lỗi
-
-        season = data_input["Season"]
-        if not season:  # Kiểm tra nếu Season trống
+        season = data_input["Season"].strip()
+        if not season:
             raise ValueError("Mùa không được để trống!")
+        season = season.capitalize()
 
-        try:
-            visibility = float(data_input["Visibility (km)"])
-        except ValueError:
-            raise ValueError("Tầm nhìn phải là một số hợp lệ!")  # Nếu không phải số, báo lỗi
-
-        location = data_input["Location"]
-        if not location:  # Kiểm tra nếu Location trống
+        location = data_input["Location"].strip()
+        if not location:
             raise ValueError("Vị trí không được để trống!")
+        location = location.capitalize()
 
-        weather_type = data_input["Weather Type"]
-        if not weather_type:  # Kiểm tra nếu Weather Type trống
+        weather_type = data_input["Weather Type"].strip()
+        if not weather_type:
             raise ValueError("Loại thời tiết không được để trống!")
+        weather_type = weather_type.capitalize()
 
         # Tạo hàng mới dưới dạng DataFrame
         new_row = pd.DataFrame([{
@@ -84,14 +82,15 @@ def Create(data, data_input, error_label):
         updated_data = pd.concat([new_row, data], ignore_index=True)
 
         # Xóa thông báo lỗi trước đó (nếu có)
-        error_label.config(text="")  # Đảm bảo rằng text được xóa đi khi không có lỗi
+        error_label.config(text="")
         return updated_data  # Trả về DataFrame đã cập nhật
 
     except ValueError as e:
-        # Hiển thị thông báo lỗi trực tiếp trên GUI nếu có lỗi chuyển đổi dữ liệu
-        error_message = f"Dữ liệu nhập vào không hợp lệ: {e}"  # Lấy thông báo lỗi chi tiết
-        error_label.config(text=error_message, foreground="red")  # Hiển thị lỗi với màu đỏ
-        return None  # Trả về None để thông báo lỗi đã xảy ra
+        # Hiển thị thông báo lỗi trực tiếp trên GUI nếu có lỗi
+        error_message = f"Dữ liệu nhập vào không hợp lệ: {e}"
+        error_label.config(text=error_message, foreground="red")
+        return None  # Trả về None để thông báo lỗi
+
 
 # Hàm xóa dữ liệu
 def Delete(data, selected_row):
