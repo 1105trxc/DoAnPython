@@ -523,8 +523,8 @@ class CSVApp:
                             raise ValueError("Nhiệt độ phải nằm trong khoảng -25 đến 71°C.")
                         if key == "Humidity (%)" and not (0 <= value <= 110):
                             raise ValueError("Độ ẩm phải nằm trong khoảng 0% đến 110%.")
-                        if key == "Wind Speed (km/h)" and not (0 <= value <= 40):
-                            raise ValueError("Tốc độ gió phải nằm trong khoảng 0 đến 40 km/h.")
+                        if key == "Wind Speed (mph)" and not (0 <= value <= 40):
+                            raise ValueError("Tốc độ gió phải nằm trong khoảng 0 đến 40 mph.")
                         if key == "Precipitation (%)" and not (0 <= value <= 110):
                             raise ValueError("Lượng mưa phải nằm trong khoảng 0% đến 110%.")
                         if key == "Atmospheric Pressure (hPa)" and not (900 <= value <= 1100):
@@ -555,7 +555,7 @@ class CSVApp:
                         "Weather Type": self.weather_type_combobox.get(),
                         "Temperature (°C)": self.temperature_entry.get(),
                         "Humidity (%)": self.humidity_entry.get(),
-                        "Wind Speed (km/h)": self.wind_speed_entry.get(),
+                        "Wind Speed (mph)": self.wind_speed_entry.get(),
                         "Precipitation (%)": self.precipitation_entry.get(),
                         "Atmospheric Pressure (hPa)": self.atmospheric_pressure_entry.get(),
                         "UV Index": self.uv_index_entry.get(),
@@ -569,6 +569,8 @@ class CSVApp:
                     # Cập nhật dữ liệu trong DataFrame
                     for column, value in data_input.items():
                         self.data.at[selected_row, column] = value
+                    
+                    messagebox.showinfo("Thông báo","Cập nhật thành công!")
 
                     # Cập nhật Treeview
                     tree.item(tree.get_children()[selected_row], values=list(self.data.iloc[selected_row]))
@@ -615,7 +617,7 @@ class CSVApp:
                 self.humidity_entry.grid(row=5, column=1, padx=5, pady=5)
                 self.humidity_entry.insert(0, str(self.data.iloc[selected_row]["Humidity (%)"]))
 
-                ttk.Label(update_frame, text="Wind Speed (km/h):").grid(row=6, column=0, padx=5, pady=5)
+                ttk.Label(update_frame, text="Wind Speed (mph):").grid(row=6, column=0, padx=5, pady=5)
                 self.wind_speed_entry = ttk.Entry(update_frame)
                 self.wind_speed_entry.grid(row=6, column=1, padx=5, pady=5)
                 self.wind_speed_entry.insert(0, str(self.data.iloc[selected_row]["Wind Speed (mph)"]))
